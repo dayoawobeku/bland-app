@@ -25,3 +25,9 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+@layer components {
+  input {
+    @apply h-[54px] w-full max-w-[308px] rounded bg-grey-700 px-5 font-manrope font-light outline outline-1 outline-white-600 placeholder:text-really-sm placeholder:text-white-100 focus:text-primary focus:outline-none focus:ring-1 focus:ring-primary;
+  }
+}
