@@ -1,12 +1,12 @@
 'use client';
 
-import {useState} from 'react';
 import Image from 'next/image';
 import {appScreenshot} from '@/assets/images';
-import {Button, Input, Nav} from '@/components';
+import {Button, Nav} from '@/components';
+import {useAuth} from '@/hooks';
 
 export default function Hero() {
-  const [email, setEmail] = useState('');
+  const {handleSignUp, handleLogin} = useAuth();
   return (
     <div className="bg-[linear-gradient(0deg,rgba(0,0,0,1)31.45%,rgba(20,20,20,1)100%)]">
       <div className="pt-10">
@@ -28,14 +28,8 @@ export default function Hero() {
           </span>
         </p>
         <div className="mt-7 flex items-center justify-center gap-5">
-          <Input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="Your email address..."
-            ariaLabel="email address"
-          />
-          <Button />
+          <Button text="Sign up with Google" onClick={handleSignUp} />
+          <Button text="Log in with Google" onClick={handleLogin} />
         </div>
       </main>
 

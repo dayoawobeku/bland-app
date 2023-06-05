@@ -1,6 +1,7 @@
 'use client';
 
 import {useState} from 'react';
+import {usePathname, useRouter} from 'next/navigation';
 import {Button} from '@/components';
 import Card from './card';
 import {CardProps} from './types';
@@ -23,6 +24,8 @@ const CARDS: CardProps[] = [
 ];
 
 export default function Main() {
+  const router = useRouter();
+  const pathname = usePathname();
   const [cards, setCards] = useState<CardProps[]>(CARDS);
 
   const handleCardClick = (id: number, isActive: boolean) => {
@@ -43,9 +46,14 @@ export default function Main() {
     });
   };
 
-  // this will be sent to the API
   const activeCard = cards.find(card => card.active) || null;
-  console.log(activeCard);
+
+  const handleNavigation = () => {
+    if (activeCard?.id === 1) {
+      return router.push(pathname + '/ai-name-generator');
+    }
+    return router.push(pathname + '/ai-human-experience');
+  };
 
   return (
     <main className="mt-[84px]">
@@ -63,7 +71,11 @@ export default function Main() {
             <Card key={card.id} handleCardClick={handleCardClick} {...card} />
           ))}
         </div>
-        <Button size="large" />
+        <Button
+          size="large"
+          disabled={!activeCard}
+          onClick={handleNavigation}
+        />
       </section>
     </main>
   );

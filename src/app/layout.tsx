@@ -1,6 +1,7 @@
 import {Unbounded, Manrope} from 'next/font/google';
 import '@/styles/globals.css';
 import '@/styles/react-select.css';
+import UserProvider from '@/context/user-provider';
 
 const unbounded = Unbounded({
   variable: '--font-unbounded',
@@ -23,7 +24,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
       <body className={`${unbounded.variable} ${manrope.variable}`}>
-        {children}
+        <UserProvider>{children}</UserProvider>
       </body>
     </html>
   );
