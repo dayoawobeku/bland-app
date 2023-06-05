@@ -7,6 +7,10 @@ export {default as linkedinIc} from './linkedin-ic.svg';
 export {default as nameIc} from './name-ic.svg';
 export {default as suitcase} from './suitcase.svg';
 export {default as userCheck} from './user-check.svg';
+export {default as previous} from './previous.svg';
+export {default as next} from './next.svg';
+export {default as multiValueRemove} from './multivalue-remove.svg';
+export {default as dropdownIndicator} from './dropdown-indicator.svg';
 
 // PNGs
 export {default as appScreenshot} from './app-screenshot.png';

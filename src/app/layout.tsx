@@ -1,5 +1,6 @@
 import {Unbounded, Manrope} from 'next/font/google';
 import '@/styles/globals.css';
+import '@/styles/react-select.css';
 
 const unbounded = Unbounded({
   variable: '--font-unbounded',
