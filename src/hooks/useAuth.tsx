@@ -10,9 +10,9 @@ import {
   getAdditionalUserInfo,
   deleteUser,
 } from 'firebase/auth';
-import firebase from '@/helpers/firebase';
 import {doc, getDoc, getFirestore, setDoc} from 'firebase/firestore';
 import {isPast, parseISO, setSeconds, startOfDay} from 'date-fns';
+import firebase from '@/helpers/firebase';
 import {UserContext} from '@/context/user-provider';
 import {removeCookie, setCookie} from '@/helpers/cookies';
 

@@ -50,7 +50,7 @@ export default function Main() {
 
   const handleNavigation = () => {
     if (activeCard?.id === 1) {
-      return router.push(pathname + '/ai-name-generator');
+      return router.push(pathname + '/free-ai-name');
     }
     return router.push(pathname + '/ai-human-experience');
   };
