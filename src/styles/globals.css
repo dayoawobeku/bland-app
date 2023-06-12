@@ -28,10 +28,14 @@ body {
 
 @layer components {
   input {
-    @apply h-[54px] w-full max-w-[308px] rounded bg-grey-700 px-5 font-manrope font-light outline outline-1 outline-white-600 placeholder:text-really-sm placeholder:text-white-100 focus:text-primary focus:outline-none focus:ring-1 focus:ring-primary;
+    @apply h-[54px] w-full max-w-[308px] rounded bg-grey-800 px-5 font-manrope font-light outline outline-1 outline-white-600 text-md-small placeholder:text-really-sm placeholder:text-white-100 focus:text-primary focus:outline-none focus:ring-1 focus:ring-primary;
   }
 
   input[data-not-rounded] {
-    @apply max-w-full pl-0 pr-10 rounded-none outline-none border-b-[0.5px] border-grey-300 placeholder:text-md-small placeholder:text-primary placeholder:font-light focus:border-primary focus:ring-0;
+    @apply max-w-full pl-0 pr-10 rounded-none outline-none border-b-[0.5px] border-grey-300 text-md-small placeholder:text-md-small placeholder:text-primary-700 placeholder:font-light focus:border-primary focus:ring-0 focus:text-primary;
+  }
+
+  textarea {
+    @apply max-w-full bg-grey-800 font-manrope font-light outline-none border-b-[0.5px] border-grey-300 text-md-small placeholder:text-md-small placeholder:text-primary-700 placeholder:font-light focus:border-primary focus:ring-0 focus:text-primary;
   }
 }

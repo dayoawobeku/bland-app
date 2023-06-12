@@ -2,9 +2,10 @@
 
 import {useState} from 'react';
 import Image from 'next/image';
+import {usePathname} from 'next/navigation';
 import Select, {OnChangeValue, ActionMeta} from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import {FREE_AI_NAME_DATA} from '@/helpers/data';
+import {AI_HUMAN_NAME_DATA, FREE_AI_NAME_DATA} from '@/helpers/data';
 import {next, previous} from '@/assets/images';
 import {
   Button,
@@ -23,9 +24,16 @@ export default function Main() {
   const [whatYouProvideFor, setWhatYouProvideFor] = useState('');
   const [keywords, setKeywords] = useState<(string | Keyword)[]>([]);
   const [currentKeyword, setCurrentKeyword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [businessVision, setBusinessVision] = useState('');
 
-  const DATA = FREE_AI_NAME_DATA[currentQuestionIndex];
-  const isLastQuestion = currentQuestionIndex === FREE_AI_NAME_DATA.length - 1;
+  const pathname = usePathname();
+  const isHumanName = pathname === '/preferred-naming-method/ai-human-service';
+
+  const nameData = isHumanName ? AI_HUMAN_NAME_DATA : FREE_AI_NAME_DATA;
+  const DATA = nameData[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === nameData.length - 1;
 
   const handleNextQuestion = () => {
     const nextQuestionIndex = currentQuestionIndex + 1;
@@ -77,10 +85,15 @@ export default function Main() {
 
   return (
     <>
-      <div className="flex flex-col gap-20">
+      <div className="flex flex-col">
         <h1 className="font-unbounded font-medium text-lg w-full max-w-[707px]">
           {DATA.question}
         </h1>
+        {isHumanName && DATA.instruction !== '' && (
+          <p className="mt-4 text-semi-sm font-manrope font-light">
+            {DATA.instruction}
+          </p>
+        )}
         {DATA.inputType === 'dropdown' && (
           <Select
             id={DATA.id.toString()}
@@ -96,16 +109,18 @@ export default function Main() {
             placeholder="Select your answer here"
             components={{DropdownIndicator}}
             classNamePrefix="react-select"
+            className={isHumanName ? 'mt-16' : 'mt-20'}
             styles={customStyles}
             isSearchable={false}
           />
         )}
 
-        {DATA.inputType === 'text' && (
-          <div className="flex items-center gap-5 font-unbounded">
+        {DATA.inputType === 'text' && DATA.inputTextType !== 'user-name' && (
+          <div className="flex items-center gap-5 font-unbounded mt-20">
             <span className="text-p2 font-medium">We provide</span>
-            <label htmlFor="" className="w-[34.37%]">
+            <label htmlFor="what_you_provide" className="w-[34.37%]">
               <Input
+                id="what_you_provide"
                 data-not-rounded
                 placeholder="Type your answer here"
                 type="text"
@@ -121,8 +136,9 @@ export default function Main() {
               />
             </label>
             <span className="text-p2 font-medium">for</span>
-            <label htmlFor="" className="w-[34.37%]">
+            <label htmlFor="what_you_provide_for" className="w-[34.37%]">
               <Input
+                id="what_you_provide_for"
                 data-not-rounded
                 placeholder="Type your answer here"
                 type="text"
@@ -141,7 +157,7 @@ export default function Main() {
         )}
 
         {DATA.inputType === 'keywords' && (
-          <div>
+          <div className="mt-20">
             <CreatableSelect
               components={{
                 DropdownIndicator: null,
@@ -176,6 +192,71 @@ export default function Main() {
             <p className="mt-2 text-semi-sm font-manrope font-light">
               Press enter after adding each keywords
             </p>
+          </div>
+        )}
+
+        {DATA.inputTextType === 'business-vision' && (
+          <textarea
+            name=""
+            id="business_vision"
+            placeholder="Type your answer here"
+            className="mt-16 max-w-[85.73%]"
+            aria-label="Business vision"
+            value={businessVision}
+            onChange={e => {
+              setBusinessVision(e.target.value);
+              handleChange({
+                ...selectedOption,
+                businessVision: e.target.value,
+              } as OnChangeValue<OptionType, false>);
+            }}
+          ></textarea>
+        )}
+
+        {DATA.inputTextType === 'user-name' && (
+          <div className="flex flex-col gap-5 font-unbounded mt-8">
+            <div className="flex items-center gap-6">
+              <span className="text-p2 font-medium">Your first name is</span>
+              <label htmlFor="first_name" className="w-[34.37%]">
+                <Input
+                  id="first_name"
+                  data-not-rounded
+                  placeholder="Type your answer here"
+                  type="text"
+                  value={firstName}
+                  ariaLabel="First name"
+                  onChange={e => {
+                    setFirstName(e.target.value);
+                    handleChange({
+                      ...selectedOption,
+                      firstName: e.target.value,
+                    } as OnChangeValue<OptionType, false>);
+                  }}
+                />
+              </label>
+            </div>
+            <div className="flex items-center gap-6">
+              <span className="text-p2 font-medium">
+                While your last name is
+              </span>
+              <label htmlFor="last_name" className="w-[34.37%]">
+                <Input
+                  id="last_name"
+                  data-not-rounded
+                  placeholder="Type your answer here"
+                  type="text"
+                  value={lastName}
+                  ariaLabel="Last name"
+                  onChange={e => {
+                    setLastName(e.target.value);
+                    handleChange({
+                      ...selectedOption,
+                      lastName: e.target.value,
+                    } as OnChangeValue<OptionType, false>);
+                  }}
+                />
+              </label>
+            </div>
           </div>
         )}
       </div>

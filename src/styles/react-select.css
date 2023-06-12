@@ -59,11 +59,17 @@
 
 .react-select__option,
 .react-select-new-page__option,
-.react-select__single-value,
 .react-select-new-page__single-value {
   font-size: 12px !important;
   color: #fff !important;
   font-weight: 300;
+}
+
+.react-select__single-value {
+  font-size: 20px !important;
+  color: #fff !important;
+  font-weight: 300;
+  margin: 0 !important;
 }
 
 .react-select__option--is-focused,

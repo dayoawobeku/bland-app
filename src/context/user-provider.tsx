@@ -31,7 +31,7 @@ const UserProvider = ({children}: UserProviderProps) => {
     const storedUser = getCookie('user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
-
+  console.log(user, 'user');
   return (
     <UserContext.Provider value={{user, setUser, ...auth}}>
       {children}
