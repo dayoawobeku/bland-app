@@ -16,9 +16,14 @@ import {
 } from '@/components';
 import {Keyword, OptionType} from '@/types';
 
-export default function Main() {
+const Main = ({
+  currentQuestionIndex,
+  setCurrentQuestionIndex,
+}: {
+  currentQuestionIndex: number;
+  setCurrentQuestionIndex: (index: number) => void;
+}) => {
   const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState<OptionType[]>([]);
   const [whatYouProvide, setWhatYouProvide] = useState('');
   const [whatYouProvideFor, setWhatYouProvideFor] = useState('');
@@ -293,4 +298,6 @@ export default function Main() {
       </div>
     </>
   );
-}
+};
+
+export default Main;

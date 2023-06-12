@@ -1,15 +1,25 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
-import {logo, suitcase, userCheck} from '@/assets/images';
+import {logo, suitcase, userCheck, userCheckPrimary} from '@/assets/images';
 
-export default function Aside({userCheckText}: {userCheckText: string}) {
+export default function Aside({
+  userCheckText,
+  width,
+}: {
+  userCheckText: string;
+  width: string;
+}) {
   return (
     <>
       <Link href="/" className="w-fit">
         <Image src={logo} alt="logo" width={128.92} height={28.66} />
       </Link>
       <div className="mt-[139px] flex items-center justify-between w-full">
-        <div className="relative w-full after:content-[''] after:absolute after:h-[1px] after:w-full after:bg-grey-150 after:top-5 flex flex-col gap-2 before:content-[''] before:absolute before:h-[1px] before:w-3/4 before:bg-primary before:top-5 before:z-[5]">
+        <div
+          className={`relative flex flex-col gap-2 w-full after:content-[''] after:absolute after:h-[1px] after:w-full after:bg-grey-150 after:top-5 before:content-[''] before:absolute before:h-[1px] before:bg-primary before:transition-all before:duration-300 before:top-5 before:z-[5] before:w-[${width}]`}
+        >
           <div className="flex h-[37px] w-[37px] items-center justify-center rounded-full bg-grey-400 z-10">
             <Image src={suitcase} alt="" width={20} height={20} />
           </div>
@@ -17,7 +27,12 @@ export default function Aside({userCheckText}: {userCheckText: string}) {
         </div>
         <div className="flex flex-col gap-2 whitespace-nowrap">
           <div className="flex h-[37px] w-[37px] items-center justify-center rounded-full bg-grey-200">
-            <Image src={userCheck} alt="" width={20} height={20} />
+            <Image
+              src={width === '100%' ? userCheckPrimary : userCheck}
+              alt=""
+              width={20}
+              height={20}
+            />
           </div>
           <p className="font-manrope text-semi-sm">{userCheckText}</p>
         </div>

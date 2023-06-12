@@ -27,6 +27,7 @@ const FREE_AI_NAME_DATA = [
     options: nameTypeData,
     inputType: 'dropdown',
     inputTextType: 'name-type',
+    width: '25%',
   },
   {
     id: 2,
@@ -38,6 +39,7 @@ const FREE_AI_NAME_DATA = [
     options: businessIndustryData,
     inputType: 'dropdown',
     inputTextType: 'business-industry',
+    width: '50%',
   },
   {
     id: 3,
@@ -48,6 +50,7 @@ const FREE_AI_NAME_DATA = [
     instruction: '',
     inputType: 'text',
     inputTextType: 'business-description',
+    width: '75%',
   },
   {
     id: 4,
@@ -58,13 +61,14 @@ const FREE_AI_NAME_DATA = [
     instruction: '',
     inputType: 'keywords',
     inputTextType: 'keywords',
+    width: '100%',
   },
 ];
 
 const AI_HUMAN_NAME_DATA = [
   {
     id: 1,
-    userCheckText: 'Choose name',
+    userCheckText: 'Create account',
     funFact:
       'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
     question: 'What type of name do you need?',
@@ -72,10 +76,11 @@ const AI_HUMAN_NAME_DATA = [
     options: nameTypeData,
     inputType: 'dropdown',
     inputTextType: 'name-type',
+    width: '20%',
   },
   {
     id: 2,
-    userCheckText: 'Choose name',
+    userCheckText: 'Create account',
     funFact:
       'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
     question: 'Which of these industries does your business fit in?',
@@ -83,16 +88,18 @@ const AI_HUMAN_NAME_DATA = [
     options: businessIndustryData,
     inputType: 'dropdown',
     inputTextType: 'business-industry',
+    width: '40%',
   },
   {
     id: 3,
-    userCheckText: 'Choose name',
+    userCheckText: 'Create account',
     funFact:
       'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
     question: 'Fill the blanks to describe your business briefly.',
     instruction: '',
     inputType: 'text',
     inputTextType: 'business-description',
+    width: '60%',
   },
   {
     id: 4,
@@ -104,16 +111,18 @@ const AI_HUMAN_NAME_DATA = [
       'Share the vision of your company or the story behind how you decided to build this.',
     inputType: 'textarea',
     inputTextType: 'business-vision',
+    width: '80%',
   },
   {
     id: 5,
-    userCheckText: 'Choose name',
+    userCheckText: 'Create account',
     funFact:
       'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
     question: "What's your name?",
     instruction: '',
     inputType: 'text',
     inputTextType: 'user-name',
+    width: '100%',
   },
 ];
 

@@ -60,5 +60,15 @@ module.exports = {
       xl: ['4.0625rem', '120%'], // 65px
     },
   },
+  safelist: [
+    'before:w-[20%]',
+    'before:w-[25%]',
+    'before:w-[40%]',
+    'before:w-[50%]',
+    'before:w-[60%]',
+    'before:w-[75%]',
+    'before:w-[80%]',
+    'before:w-[100%]',
+  ],
   plugins: [],
 };
