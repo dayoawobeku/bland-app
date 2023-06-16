@@ -16,22 +16,17 @@ interface UserContextType {
   setUser: Dispatch<SetStateAction<User | null>>;
 }
 
-interface UserProviderProps {
-  children: ReactNode;
-}
-
 export const UserContext = createContext<UserContextType>({
   user: null,
   setUser: () => {},
 });
 
-const UserProvider = ({children}: UserProviderProps) => {
+const UserProvider = ({children}: {children: React.ReactNode}) => {
   const {user: authUser, ...auth} = useAuth();
   const [user, setUser] = useState<User | null>(() => {
     const storedUser = getCookie('user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
-  console.log(user, 'user');
   return (
     <UserContext.Provider value={{user, setUser, ...auth}}>
       {children}

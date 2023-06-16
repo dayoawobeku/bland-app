@@ -73,20 +73,30 @@
 }
 
 .react-select__option--is-focused,
-.react-select-new-page__option--is-focused,
-.react-select__option:hover .react-select-new-page__option:hover {
-  background-color: #121212 !important;
+.react-select__option:hover {
+  background-color: #1c1c1c !important;
 }
 
-.react-select__option--is-selected,
-.react-select-new-page__option--is-selected {
-  background-color: #333442 !important;
+.react-select__option--is-selected {
+  background-color: #1c1c1c !important;
+  position: relative;
+}
+
+.react-select__option--is-selected:focus {
+  background-color: #1c1c1c !important;
   color: #fff !important;
 }
 
-.react-select__option--is-selected:hover,
-.react-select-new-page__option--is-selected:hover {
-  background-color: #333442 !important;
+.react-select__option--is-selected::before {
+  content: url('/tick-circle.svg') !important;
+  position: absolute;
+  right: 20px;
+  width: 21px;
+  height: 21px;
+}
+
+.react-select__option--is-selected:hover {
+  background-color: #1c1c1c !important;
   color: #fff !important;
 }
 

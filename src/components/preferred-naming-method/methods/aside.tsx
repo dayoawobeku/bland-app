@@ -50,7 +50,7 @@ export default function Aside({
         <span className="font-manrope font-light">Have a question? </span>
         <Link
           href="/"
-          className="font-unbounded text-md-small underline text-primary tracking-[-1.9%]"
+          className="font-unbounded text-md-small underline text-primary tracking-[-1.9%] hover:opacity-80 transition-all duration-300"
         >
           Contact us
         </Link>

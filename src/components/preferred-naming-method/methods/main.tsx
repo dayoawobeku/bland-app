@@ -1,8 +1,8 @@
 'use client';
 
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import Image from 'next/image';
-import {usePathname} from 'next/navigation';
+import {usePathname, useRouter} from 'next/navigation';
 import Select, {OnChangeValue, ActionMeta} from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import {AI_HUMAN_NAME_DATA, FREE_AI_NAME_DATA} from '@/helpers/data';
@@ -15,6 +15,8 @@ import {
   MultiValueRemove,
 } from '@/components';
 import {Keyword, OptionType} from '@/types';
+import {usePostData} from '@/hooks/data-fetching';
+import {DataContext} from '@/context/data-provider';
 
 const Main = ({
   currentQuestionIndex,
@@ -33,6 +35,7 @@ const Main = ({
   const [lastName, setLastName] = useState('');
   const [businessVision, setBusinessVision] = useState('');
 
+  const router = useRouter();
   const pathname = usePathname();
   const isHumanName = pathname === '/preferred-naming-method/ai-human-service';
 
@@ -88,8 +91,51 @@ const Main = ({
     }
   };
 
+  const {mutate, status} = usePostData();
+
+  const {setPostData} = useContext(DataContext);
+
+  const handleSubmit = async (event: {preventDefault: () => void}) => {
+    event.preventDefault();
+
+    const companyType = selectedOptions[0]?.label;
+    const industry = selectedOptions[1]?.label;
+    const seedWords = keywords.join(', ');
+
+    const requestBody = {
+      companyType,
+      industry,
+      whatYouProvide,
+      whatYouProvideFor,
+      seedWords,
+    };
+
+    mutate(requestBody, {
+      onSuccess: data => {
+        setPostData(data?.data);
+        router.push(`${pathname}/results`);
+      },
+      onError: error => {
+        if (error instanceof Error) {
+          throw new Error(error.message);
+        }
+      },
+    });
+  };
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (status === 'error') {
+    return <div>Error...</div>;
+  }
+
   return (
-    <>
+    <form
+      className="contents"
+      onSubmit={!isHumanName ? handleSubmit : () => {}}
+    >
       <div className="flex flex-col">
         <h1 className="font-unbounded font-medium text-lg w-full max-w-[707px]">
           {DATA.question}
@@ -117,6 +163,7 @@ const Main = ({
             className={isHumanName ? 'mt-16' : 'mt-20'}
             styles={customStyles}
             isSearchable={false}
+            openMenuOnFocus
           />
         )}
 
@@ -271,32 +318,30 @@ const Main = ({
           isLastQuestion ? '-mb-[15px]' : ''
         }`}
       >
-        <button
-          onClick={handlePrevQuestion}
-          disabled={currentQuestionIndex === 0}
-          className="flex items-center gap-1 disabled:opacity-10 disabled:cursor-not-allowed"
-        >
-          <Image
-            src={previous}
-            alt={currentQuestionIndex === 0 ? 'Previous Disabled' : 'Previous'}
-            width={24}
-            height={24}
-          />
-          <span className="text-p2 font-unbounded font-medium">Prev</span>
-        </button>
+        {currentQuestionIndex !== 0 && (
+          <button
+            onClick={handlePrevQuestion}
+            className="flex items-center gap-1"
+            type="button"
+          >
+            <Image src={previous} alt="Previous" width={24} height={24} />
+            <span className="text-p2 font-unbounded font-medium">Prev</span>
+          </button>
+        )}
         {isLastQuestion ? (
           <Button text="Submit" size="medium" />
         ) : (
           <button
             onClick={handleNextQuestion}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 ml-auto"
+            type="button"
           >
             <span className="text-p2 font-unbounded font-medium">Next</span>
             <Image src={next} alt="Next" width={24} height={24} />
           </button>
         )}
       </div>
-    </>
+    </form>
   );
 };
 

@@ -48,11 +48,18 @@ export default function Main() {
 
   const activeCard = cards.find(card => card.active) || null;
 
+  const [error, setError] = useState('');
+
   const handleNavigation = () => {
     if (activeCard?.id === 1) {
       return router.push(pathname + '/free-ai-name');
+    } else if (activeCard?.id === 2) {
+      return router.push(pathname + '/ai-human-service');
+    } else {
+      // show the user an error message
+      setError('Please select a naming method');
+      return;
     }
-    return router.push(pathname + '/ai-human-service');
   };
 
   return (
@@ -74,11 +81,10 @@ export default function Main() {
             <Card key={card.id} handleCardClick={handleCardClick} {...card} />
           ))}
         </div>
-        <Button
-          size="large"
-          disabled={!activeCard}
-          onClick={handleNavigation}
-        />
+        {error && activeCard === null && (
+          <p className="text-primary font-manrope text-sm">{error}</p>
+        )}
+        <Button size="large" onClick={handleNavigation} />
       </section>
     </main>
   );

@@ -9,7 +9,7 @@ export default function Button({
   ...otherProps
 }: ButtonProps) {
   const classes =
-    'rounded-lg bg-primary font-manrope text-grey-800 transition-all duration-300 hover:enabled:bg-primary-600 active:enabled:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed py-[15.5px]';
+    'rounded-lg bg-primary font-manrope text-grey-800 transition-all duration-300 hover:enabled:bg-primary-600 active:enabled:bg-primary-700 py-[15.5px]';
   const buttonStyles =
     size === 'large'
       ? 'px-[132px]'

@@ -12,6 +12,7 @@ export {default as previous} from './previous.svg';
 export {default as next} from './next.svg';
 export {default as multiValueRemove} from './multivalue-remove.svg';
 export {default as dropdownIndicator} from './dropdown-indicator.svg';
+export {default as bookmarkIc} from './bookmark-ic.svg';
 
 // PNGs
 export {default as appScreenshot} from './app-screenshot.png';
