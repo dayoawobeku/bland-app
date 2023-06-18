@@ -7,6 +7,7 @@ import {
   customStyles,
   MultiValueRemove,
 } from './custom-select';
+import Modal from './modal';
 
 export {
   Button,
@@ -16,4 +17,5 @@ export {
   DropdownIndicator,
   customStyles,
   MultiValueRemove,
+  Modal
 };
