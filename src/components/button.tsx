@@ -1,15 +1,15 @@
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'default' | 'large' | 'medium' | 'zero' | number;
   text?: string;
-  bg?: string;
+  bg?: 'default' | 'white' | 'black';
   color?: string;
 }
 
 export default function Button({
   size = 'default',
   text = 'Get started',
-  bg = 'primary',
-  color = 'grey-800',
+  bg = 'default',
+  color = 'text-grey-800',
   className = '',
   ...otherProps
 }: ButtonProps) {
@@ -28,15 +28,35 @@ export default function Button({
         return 'px-[13.68px] sm:px-[28.5px]';
     }
   };
+  const getBackgroundColor = (bg: ButtonProps['bg']) => {
+    switch (bg) {
+      case 'white':
+        return 'bg-white';
+      case 'black':
+        return 'bg-black';
+      default:
+        return 'bg-primary';
+    }
+  };
 
   const buttonStyles = getButtonStyles(size);
-  const bgClass = `bg-${bg}`;
-  const hoverBgClass = `hover:bg-${bg}-600`;
-  const activeBgClass = `active:bg-${bg}-700`;
-  const fontColorClass = `text-${color}`;
+  const bgClass = getBackgroundColor(bg);
+  const hoverBgClass =
+    bg === 'white'
+      ? 'hover:bg-[#F2F2F2]'
+      : bg === 'black'
+      ? 'hover:bg-grey'
+      : 'hover:bg-primary-600';
+  const activeBgClass =
+    bg === 'white'
+      ? 'active:bg-[#DDDDDD]'
+      : bg === 'black'
+      ? 'active:bg-grey-200'
+      : 'active:bg-primary-700';
+  const fontColorClass = `${color}`;
 
   const classes =
-    'rounded-lg font-manrope transition-all duration-300 hover:enabled:hover:bg-primary-600 active:enabled:active:bg-primary-700 py-[15.5px]';
+    'rounded-lg font-manrope transition-all duration-300 py-[15.5px]';
 
   return (
     <button

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import {tickCircle, tickCircleGrey} from '@/assets/images';
 import {Button} from '@/components';
 import {Nav} from '@/components/preferred-naming-method';
+import Link from 'next/link';
 
 const STARTERS_PLAN = [
   {id: 1, image: tickCircle, feature: 'Brand Name'},
@@ -62,6 +63,7 @@ interface PlanFeatures {
   discountedPricing: string;
   action: React.ReactNode;
   features: PlanFeature[];
+  hidePricing?: boolean;
 }
 
 function Card({
@@ -72,6 +74,7 @@ function Card({
   action,
   features,
   bg = 'black',
+  hidePricing = false,
 }: PlanFeatures) {
   const background = bg === 'black' ? 'bg-black' : 'bg-primary';
   return (
@@ -121,23 +124,25 @@ function Card({
         </div>
       </div>
       <div className="flex flex-col gap-8 w-full">
-        <div className="flex items-center gap-3">
-          <p
-            className={`font-unbounded text-p2 font-medium ${
-              bg === 'primary' ? 'text-primary-600' : 'text-grey-500'
-            }`}
-          >
-            {pricing}
-          </p>
-          <p
-            className={`font-unbounded text-md font-semibold ${
-              bg === 'primary' ? 'text-black' : 'text-white'
-            }`}
-          >
-            {discountedPricing}
-          </p>
-        </div>
-        <div className="flex items-center">{action}</div>
+        {!hidePricing ? (
+          <div className="flex items-center gap-3">
+            <p
+              className={`font-unbounded text-p2 font-medium ${
+                bg === 'primary' ? 'text-primary-600' : 'text-grey-500'
+              }`}
+            >
+              {pricing}
+            </p>
+            <p
+              className={`font-unbounded text-md font-semibold ${
+                bg === 'primary' ? 'text-black' : 'text-white'
+              }`}
+            >
+              {discountedPricing}
+            </p>
+          </div>
+        ) : null}
+        <div className="flex items-center h-[55px]">{action}</div>
       </div>
     </div>
   );
@@ -172,14 +177,29 @@ export default function PricingPlans() {
                 size="zero"
                 text="Choose plan"
                 bg="black"
-                color="primary"
+                color="text-primary"
               />
             }
             features={STARTERS_PLAN}
           />
           <Card
-            bg="primary"
             planType="Budding"
+            bg="primary"
+            planDescription="For SMEs and early stage businesses"
+            pricing="$250"
+            discountedPricing="$150"
+            action={
+              <Button
+                className="w-full"
+                size="zero"
+                text="Choose plan"
+                bg="white"
+              />
+            }
+            features={BUDDING_PLAN}
+          />
+          <Card
+            planType="More"
             planDescription="For SMEs and early stage businesses"
             pricing="$250"
             discountedPricing="$150"
@@ -188,11 +208,27 @@ export default function PricingPlans() {
                 className="outline outline-1 outline-primary w-full"
                 size="zero"
                 text="Choose plan"
-                bg="white"
-                color="grey-800"
+                bg="black"
+                color="text-primary"
               />
             }
-            features={BUDDING_PLAN}
+            features={MORE_PLAN}
+          />
+          <Card
+            planType="Extra"
+            planDescription="For SMEs and early stage businesses"
+            pricing="$250"
+            discountedPricing="$150"
+            action={
+              <Link
+                className="flex items-center justify-center font-unbounded text-primary text-semi-sm underline w-full"
+                href="/"
+              >
+                Contact us
+              </Link>
+            }
+            features={EXTRA_PLAN}
+            hidePricing
           />
         </section>
       </div>
