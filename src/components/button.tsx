@@ -1,8 +1,9 @@
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: 'default' | 'large' | 'medium' | 'zero' | number;
+  size?: 'default' | 'large' | 'medium' | 'zero' | 'custom';
   text?: string;
   bg?: 'default' | 'white' | 'black';
   color?: string;
+  padding?: string;
 }
 
 export default function Button({
@@ -10,12 +11,13 @@ export default function Button({
   text = 'Get started',
   bg = 'default',
   color = 'text-grey-800',
+  padding = '',
   className = '',
   ...otherProps
 }: ButtonProps) {
   const getButtonStyles = (size: ButtonProps['size']) => {
-    if (typeof size === 'number') {
-      return `px-[${size}px]`;
+    if (size === 'custom') {
+      return padding;
     }
     switch (size) {
       case 'large':

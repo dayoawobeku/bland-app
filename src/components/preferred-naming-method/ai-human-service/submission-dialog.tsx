@@ -45,7 +45,12 @@ const SubmissionDialog = ({
           </p>
         </div>
 
-        <Button className="mt-8" text="Choose plan" size={132} />
+        <Button
+          className="mt-8"
+          text="Choose plan"
+          size="custom"
+          padding="px-[132px]"
+        />
       </div>
     </Modal>
   );
