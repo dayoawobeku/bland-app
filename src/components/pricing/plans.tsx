@@ -160,8 +160,6 @@ const addons: Addon[] = [
 function Addons({addons}: AddonsProps) {
   const [selectedAddons, setSelectedAddons] = useState<Addon[]>([]);
 
-  console.log(selectedAddons);
-
   const handleAddonChange = (addon: Addon) => {
     if (selectedAddons.includes(addon)) {
       setSelectedAddons(selectedAddons.filter(selected => selected !== addon));

@@ -14,9 +14,14 @@ export {default as multiValueRemove} from './multivalue-remove.svg';
 export {default as dropdownIndicator} from './dropdown-indicator.svg';
 export {default as bookmarkIc} from './bookmark-ic.svg';
 export {default as closeIc} from './close.svg';
+export {default as closeTransparentIc} from './close-transparent.svg';
 export {default as submission} from './submission.svg';
 export {default as tickCircle} from './tick-circle.svg';
 export {default as tickCircleGrey} from './tick-circle-grey.svg';
 
 // PNGs
 export {default as appScreenshot} from './app-screenshot.png';
+export {default as brandNameImportance} from './brand-name-importance.png';
+export {default as brandNameChecklists} from './brand-name-checklists.png';
+export {default as badBrandName} from './bad-brand-name.png';
+export {default as bookMockup} from './book-mockup.png';

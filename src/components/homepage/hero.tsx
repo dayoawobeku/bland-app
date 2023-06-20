@@ -27,9 +27,14 @@ export default function Hero() {
             not a name generating tool.
           </span>
         </p>
-        <div className="mt-7 flex items-center justify-center gap-5">
-          <Button text="Sign up with Google" onClick={handleSignUp} />
-          <Button text="Log in with Google" onClick={handleLogin} />
+        <div className="mt-7">
+          <p className="uppercase font-unbounded font-light text-really-sm tracking-[3px]">
+            Try bland for free
+          </p>
+          <div className="mt-3 flex items-center justify-center gap-5">
+            <Button text="Sign up with Google" onClick={handleSignUp} />
+            <Button text="Log in with Google" onClick={handleLogin} />
+          </div>
         </div>
       </main>
 

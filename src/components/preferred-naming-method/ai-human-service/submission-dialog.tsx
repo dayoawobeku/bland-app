@@ -1,8 +1,8 @@
 'use client';
 
+import Image from 'next/image';
 import {closeIc, submission} from '@/assets/images';
 import {Button, Modal} from '@/components';
-import Image from 'next/image';
 
 const SubmissionDialog = ({
   isOpen,
