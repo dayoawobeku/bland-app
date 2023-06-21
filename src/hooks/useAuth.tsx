@@ -10,7 +10,7 @@ import {
   getAdditionalUserInfo,
   deleteUser,
 } from 'firebase/auth';
-import {doc, getDoc, getFirestore, setDoc} from 'firebase/firestore';
+import {doc, getDoc, getFirestore, setDoc, updateDoc} from 'firebase/firestore';
 import {isPast, parseISO, setSeconds, startOfDay} from 'date-fns';
 import firebase from '@/helpers/firebase';
 import {UserContext} from '@/context';
@@ -132,11 +132,25 @@ export const useAuth = () => {
     }
   };
 
+  const handlePaidUserDetails = async (
+    userId: string,
+    planDetails: any,
+  ): Promise<void> => {
+    try {
+      const userDocRef = doc(db, 'users', userId);
+      await updateDoc(userDocRef, planDetails);
+      console.log('Plan details updated for user:', userId);
+    } catch (error) {
+      console.error('Error updating plan details:', error);
+    }
+  };
+
   return {
     user,
     trialCount,
     handleSignUp,
     handleLogin,
     handleLogout,
+    handlePaidUserDetails,
   };
 };

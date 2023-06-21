@@ -18,6 +18,19 @@ module.exports = {
         unbounded: ['var(--font-unbounded)'],
         manrope: ['var(--font-manrope)'],
       },
+      keyframes: {
+        slide: {
+          '0%, 7%, 93%, 100%': {
+            transform: 'translate3d(0px 0px 0px)',
+          },
+          '50%': {
+            transform: 'translate3d(0px, -1095px, 0px)',
+          },
+        },
+      },
+      animation: {
+        slide: 'slide 20s infinite',
+      },
     },
     colors: {
       primary: {

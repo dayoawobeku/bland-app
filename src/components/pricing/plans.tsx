@@ -7,6 +7,7 @@ import {tickCircle, tickCircleGrey} from '@/assets/images';
 import {Button} from '@/components';
 import {Nav} from '@/components/preferred-naming-method';
 import {SelectedOptionsContext} from '@/context';
+import {useAuth} from '@/hooks';
 
 interface PlanFeature {
   id: number;
@@ -28,6 +29,7 @@ interface PlanFeatures {
   onChoosePlan?: (planType: string | null) => void;
   children?: React.ReactNode;
   reselectPlan?: React.ReactNode;
+  confirmAction?: React.ReactNode;
 }
 
 interface SelectedPlanUIProps {
@@ -35,6 +37,7 @@ interface SelectedPlanUIProps {
   onChoosePlan?: ((planType: string | null) => void) | undefined;
   children: React.ReactNode;
   action: React.ReactNode;
+  confirmAction: React.ReactNode;
 }
 
 interface Addon {
@@ -161,6 +164,7 @@ const SelectedPlanUI = ({
   selectedPlan,
   action,
   children,
+  confirmAction,
 }: SelectedPlanUIProps) => {
   const plan = plans.find(plan => plan.planType === selectedPlan);
 
@@ -215,7 +219,7 @@ const SelectedPlanUI = ({
           </p>
         </div>
         <div className="flex flex-col gap-4 mt-6 mb-10">{children}</div>
-        <Button size="custom" padding="px-[144.5px]" text="Confirm" />
+        {confirmAction}
       </div>
     </div>
   );
@@ -233,6 +237,7 @@ function Card({
   selectedPlan,
   onChoosePlan = () => {},
   reselectPlan,
+  confirmAction,
   children,
 }: PlanFeatures) {
   const background = bg === 'black' ? 'bg-black' : 'bg-primary';
@@ -243,6 +248,7 @@ function Card({
         selectedPlan={selectedPlan}
         onChoosePlan={onChoosePlan}
         action={reselectPlan}
+        confirmAction={confirmAction}
       >
         {children}
       </SelectedPlanUI>
@@ -337,6 +343,8 @@ export default function PricingPlans() {
   const [selectedAddons, setSelectedAddons] = useState<Addon[]>([]);
   const {selectedOptions} = useContext(SelectedOptionsContext);
 
+  const {user, handlePaidUserDetails} = useAuth();
+
   const handleAddonChange = (addon: Addon) => {
     if (selectedAddons.includes(addon)) {
       setSelectedAddons(selectedAddons.filter(selected => selected !== addon));
@@ -344,7 +352,41 @@ export default function PricingPlans() {
       setSelectedAddons([...selectedAddons, addon]);
     }
   };
-    const data = {plan: selectedPlan?.planType ?? null, addons: selectedAddons};
+
+  const companyDetails = {
+    companyType: selectedOptions[0]?.label ?? null,
+    industryType: selectedOptions[1]?.label ?? null,
+    companyGoal:
+      selectedOptions[2]?.whatYouProvide &&
+      selectedOptions[2]?.whatYouProvideFor
+        ? `We provide ${selectedOptions[2]?.whatYouProvide} for ${selectedOptions[2]?.whatYouProvideFor}`
+        : null,
+    businessVision: selectedOptions[3]?.businessVision ?? null,
+    fullName:
+      selectedOptions[4]?.firstName && selectedOptions[4]?.lastName
+        ? `${selectedOptions[4]?.firstName} ${selectedOptions[4]?.lastName}`
+        : null,
+  };
+  const handleAddUserPlan = async () => {
+    try {
+      if (user) {
+        const userId = user.uid;
+        const updatedPlanDetails = {
+          planDetails: {
+            plan: selectedPlan?.planType ?? null,
+            companyDetails,
+            addons: selectedAddons.map(addon => addon.label),
+          },
+        };
+        await handlePaidUserDetails(userId, updatedPlanDetails);
+        console.log('Plan details added to user:', userId);
+      } else {
+        console.error('User not logged in');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="bg-grey-800 min-h-screen pt-14 px-4 pb-24">
@@ -378,6 +420,14 @@ export default function PricingPlans() {
               >
                 Reselect plan
               </button>
+            }
+            confirmAction={
+              <Button
+                size="custom"
+                padding="px-[144.5px]"
+                text="Confirm"
+                onClick={handleAddUserPlan}
+              />
             }
           >
             {addons.map((addon, index) => (

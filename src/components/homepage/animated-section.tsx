@@ -52,13 +52,19 @@ function Element({text, greyedOut}: Element) {
   return (
     <>
       {greyedOut ? (
-        <div className="relative flex h-[121.25px] w-[477px] items-center justify-center rounded-full bg-black after:absolute after:h-[2px] after:w-[calc(100%-64px)] after:bg-white">
+        <div
+          className="relative flex h-[121.25px] w-[477px] items-center justify-center rounded-full bg-black after:absolute after:h-[2px] after:w-[calc(100%-64px)] after:bg-white"
+          aria-label={`Not ${text}`}
+        >
           <span className="font-unbounded text-2xl font-bold text-grey-200">
             {text}
           </span>
         </div>
       ) : (
-        <div className="flex h-[121.25px] w-[477px] items-center justify-center rounded-full bg-black outline outline-[3px] outline-white-100">
+        <div
+          className="flex h-[121.25px] w-[477px] items-center justify-center rounded-full bg-black outline outline-[3px] outline-white-100"
+          aria-label={text}
+        >
           <span className="font-unbounded text-2xl font-bold">{text}</span>
         </div>
       )}
@@ -69,7 +75,7 @@ function Element({text, greyedOut}: Element) {
 export default function AnimatedSection() {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <section className="relative -mt-54 bg-[linear-gradient(180deg,rgba(0,0,0,1)-4.39%,rgba(0,0,0,0)50.93%,rgba(0,0,0,1)99.03%),url('../assets/images/pattern.svg')] bg-cover pb-17 pl-[13.3%] pr-[7.43%] pt-[207px]">
+    <section className="relative -mt-54 bg-[url('../assets/images/pattern.svg')] bg-cover pb-17 pl-[13.3%] pr-[7.43%] pt-[207px]">
       <BrandNamingDialog isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className="mx-auto flex max-w-[1179px] items-center justify-between gap-14">
         <div className="flex max-w-[611px] flex-col">
@@ -90,7 +96,7 @@ export default function AnimatedSection() {
           </button>
         </div>
         <div className="h-[530px] overflow-y-clip pt-16">
-          <div className="flex flex-col gap-20">
+          <div className="flex flex-col gap-20 motion-safe:animate-slide">
             {ELEMENTS.map(element => (
               <Element key={element.id} {...element} />
             ))}

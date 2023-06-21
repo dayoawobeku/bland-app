@@ -6,6 +6,9 @@ export interface Keyword {
 export interface OptionType {
   whatYouProvideFor?: string;
   whatYouProvide?: string;
+  businessVision?: string;
+  firstName?: string;
+  lastName?: string;
   value: string;
   label: string;
   keywords?: (string | Keyword)[];
