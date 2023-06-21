@@ -1,15 +1,15 @@
 'use client';
 
+import {JSX} from 'react';
 import Image from 'next/image';
 import {
   DropdownIndicatorProps,
   GroupBase,
   MultiValueRemoveProps,
   components,
+  StylesConfig,
 } from 'react-select';
-import {StylesConfig} from 'react-select';
 import {dropdownIndicator, multiValueRemove} from '@/assets/images';
-import {JSX} from 'react';
 
 const DropdownIndicator = (
   props: JSX.IntrinsicAttributes &

@@ -1,11 +1,12 @@
 'use client';
 
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {tickCircle, tickCircleGrey} from '@/assets/images';
 import {Button} from '@/components';
 import {Nav} from '@/components/preferred-naming-method';
+import {SelectedOptionsContext} from '@/context';
 
 interface PlanFeature {
   id: number;
@@ -25,21 +26,20 @@ interface PlanFeatures {
   hidePricing?: boolean;
   selectedPlan?: string | null;
   onChoosePlan?: (planType: string | null) => void;
-  selectedPlanUI?: React.ReactNode;
+  children?: React.ReactNode;
+  reselectPlan?: React.ReactNode;
 }
 
 interface SelectedPlanUIProps {
   selectedPlan: string;
   onChoosePlan?: ((planType: string | null) => void) | undefined;
+  children: React.ReactNode;
+  action: React.ReactNode;
 }
 
 interface Addon {
   label: string;
   additionalInfo?: string;
-}
-
-interface AddonsProps {
-  addons: Addon[];
 }
 
 const plans: PlanFeatures[] = [
@@ -157,42 +157,11 @@ const addons: Addon[] = [
   },
 ];
 
-function Addons({addons}: AddonsProps) {
-  const [selectedAddons, setSelectedAddons] = useState<Addon[]>([]);
-
-  const handleAddonChange = (addon: Addon) => {
-    if (selectedAddons.includes(addon)) {
-      setSelectedAddons(selectedAddons.filter(selected => selected !== addon));
-    } else {
-      setSelectedAddons([...selectedAddons, addon]);
-    }
-  };
-
-  return (
-    <>
-      {addons.map((addon, index) => (
-        <label className="flex items-start gap-4" key={index}>
-          <input
-            type="checkbox"
-            className="w-7 h-7 appearance-none checked:bg-primary p-0"
-            checked={selectedAddons.includes(addon)}
-            onChange={() => handleAddonChange(addon)}
-          />
-          <div className="flex flex-col gap-0.5">
-            <span className="font-manrope font-light">{addon.label}</span>
-            {addon.additionalInfo ? (
-              <span className="font-manrope font-light text-really-sm text-primary">
-                {addon.additionalInfo}
-              </span>
-            ) : null}
-          </div>
-        </label>
-      ))}
-    </>
-  );
-}
-
-const SelectedPlanUI = ({selectedPlan, onChoosePlan}: SelectedPlanUIProps) => {
+const SelectedPlanUI = ({
+  selectedPlan,
+  action,
+  children,
+}: SelectedPlanUIProps) => {
   const plan = plans.find(plan => plan.planType === selectedPlan);
 
   if (!plan) {
@@ -235,12 +204,7 @@ const SelectedPlanUI = ({selectedPlan, onChoosePlan}: SelectedPlanUIProps) => {
           </div>
         </div>
 
-        <button
-          onClick={() => onChoosePlan?.(null)}
-          className="font-manrope font-medium text-primary mt-4 hover:text-primary-600 active:text-primary-700 transition-all duration-300 w-fit mx-auto"
-        >
-          Reselect plan
-        </button>
+        {action}
       </div>
       <div className="flex flex-col max-w-[446px]">
         <div className="flex flex-col gap-4">
@@ -250,9 +214,7 @@ const SelectedPlanUI = ({selectedPlan, onChoosePlan}: SelectedPlanUIProps) => {
             adipiscing elit, sed do eiusmod tempor
           </p>
         </div>
-        <div className="flex flex-col gap-4 mt-6 mb-10">
-          <Addons addons={addons} />
-        </div>
+        <div className="flex flex-col gap-4 mt-6 mb-10">{children}</div>
         <Button size="custom" padding="px-[144.5px]" text="Confirm" />
       </div>
     </div>
@@ -270,20 +232,20 @@ function Card({
   hidePricing = false,
   selectedPlan,
   onChoosePlan = () => {},
-  selectedPlanUI,
+  reselectPlan,
+  children,
 }: PlanFeatures) {
   const background = bg === 'black' ? 'bg-black' : 'bg-primary';
 
   if (selectedPlan === planType) {
     return (
-      <div>
-        {selectedPlanUI && (
-          <SelectedPlanUI
-            selectedPlan={selectedPlan}
-            onChoosePlan={onChoosePlan}
-          />
-        )}
-      </div>
+      <SelectedPlanUI
+        selectedPlan={selectedPlan}
+        onChoosePlan={onChoosePlan}
+        action={reselectPlan}
+      >
+        {children}
+      </SelectedPlanUI>
     );
   }
 
@@ -372,6 +334,17 @@ function Card({
 
 export default function PricingPlans() {
   const [selectedPlan, setSelectedPlan] = useState<PlanFeatures | null>(null);
+  const [selectedAddons, setSelectedAddons] = useState<Addon[]>([]);
+  const {selectedOptions} = useContext(SelectedOptionsContext);
+
+  const handleAddonChange = (addon: Addon) => {
+    if (selectedAddons.includes(addon)) {
+      setSelectedAddons(selectedAddons.filter(selected => selected !== addon));
+    } else {
+      setSelectedAddons([...selectedAddons, addon]);
+    }
+  };
+    const data = {plan: selectedPlan?.planType ?? null, addons: selectedAddons};
 
   return (
     <div className="bg-grey-800 min-h-screen pt-14 px-4 pb-24">
@@ -395,13 +368,37 @@ export default function PricingPlans() {
             features={selectedPlan.features}
             selectedPlan={selectedPlan.planType}
             onChoosePlan={() => setSelectedPlan(null)}
-            selectedPlanUI={
-              <SelectedPlanUI
-                selectedPlan={selectedPlan.planType}
-                onChoosePlan={() => setSelectedPlan(null)}
-              />
+            reselectPlan={
+              <button
+                onClick={() => {
+                  setSelectedPlan(null);
+                  setSelectedAddons([]);
+                }}
+                className="font-manrope font-medium text-primary mt-4 hover:text-primary-600 active:text-primary-700 transition-all duration-300 w-fit mx-auto"
+              >
+                Reselect plan
+              </button>
             }
-          />
+          >
+            {addons.map((addon, index) => (
+              <label className="flex items-start gap-4" key={index}>
+                <input
+                  type="checkbox"
+                  className="w-7 h-7 appearance-none checked:bg-primary p-0"
+                  checked={selectedAddons.includes(addon)}
+                  onChange={() => handleAddonChange(addon)}
+                />
+                <div className="flex flex-col gap-0.5">
+                  <span className="font-manrope font-light">{addon.label}</span>
+                  {addon.additionalInfo ? (
+                    <span className="font-manrope font-light text-really-sm text-primary">
+                      {addon.additionalInfo}
+                    </span>
+                  ) : null}
+                </div>
+              </label>
+            ))}
+          </Card>
         ) : (
           <>
             <main className="mt-[84px] mx-auto max-w-[655px] text-center">

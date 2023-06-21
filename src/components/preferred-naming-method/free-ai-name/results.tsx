@@ -3,7 +3,7 @@
 import {useContext} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {DataContext} from '@/context/data-provider';
+import {DataContext} from '@/context';
 import {bookmarkIc, logo} from '@/assets/images';
 import {ProductName} from '@/types';
 

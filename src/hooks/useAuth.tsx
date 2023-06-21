@@ -13,7 +13,7 @@ import {
 import {doc, getDoc, getFirestore, setDoc} from 'firebase/firestore';
 import {isPast, parseISO, setSeconds, startOfDay} from 'date-fns';
 import firebase from '@/helpers/firebase';
-import {UserContext} from '@/context/user-provider';
+import {UserContext} from '@/context';
 import {removeCookie, setCookie} from '@/helpers/cookies';
 
 const auth = getAuth(firebase);

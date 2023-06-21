@@ -1,7 +1,12 @@
 import {Unbounded, Manrope} from 'next/font/google';
 import '@/styles/globals.css';
 import '@/styles/react-select.css';
-import {DataProvider, QueryProvider, UserProvider} from '@/context';
+import {
+  DataProvider,
+  QueryProvider,
+  SelectedOptionsProvider,
+  UserProvider,
+} from '@/context';
 
 const unbounded = Unbounded({
   variable: '--font-unbounded',
@@ -26,7 +31,9 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <body className={`${unbounded.variable} ${manrope.variable}`}>
         <QueryProvider>
           <UserProvider>
-            <DataProvider>{children}</DataProvider>
+            <DataProvider>
+              <SelectedOptionsProvider>{children}</SelectedOptionsProvider>
+            </DataProvider>
           </UserProvider>
         </QueryProvider>
       </body>

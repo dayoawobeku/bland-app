@@ -16,8 +16,8 @@ import {
 } from '@/components';
 import {Keyword, OptionType} from '@/types';
 import {usePostData} from '@/hooks/data-fetching';
-import {DataContext} from '@/context/data-provider';
 import {SubmissionDialog} from '../ai-human-service';
+import {DataContext, SelectedOptionsContext} from '@/context';
 
 const Main = ({
   currentQuestionIndex,
@@ -26,8 +26,12 @@ const Main = ({
   currentQuestionIndex: number;
   setCurrentQuestionIndex: (index: number) => void;
 }) => {
+  const {selectedOptions, setSelectedOptions} = useContext(
+    SelectedOptionsContext,
+  );
+  const {setPostData} = useContext(DataContext);
+
   const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
-  const [selectedOptions, setSelectedOptions] = useState<OptionType[]>([]);
   const [whatYouProvide, setWhatYouProvide] = useState('');
   const [whatYouProvideFor, setWhatYouProvideFor] = useState('');
   const [keywords, setKeywords] = useState<(string | Keyword)[]>([]);
@@ -94,7 +98,6 @@ const Main = ({
   };
 
   const {mutate, status} = usePostData();
-  const {setPostData} = useContext(DataContext);
 
   const handleAiSubmit = async (event: {preventDefault: () => void}) => {
     event.preventDefault();

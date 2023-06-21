@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import {useRouter} from 'next/navigation';
 import {closeIc, submission} from '@/assets/images';
 import {Button, Modal} from '@/components';
 
@@ -11,6 +12,7 @@ const SubmissionDialog = ({
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }) => {
+  const router = useRouter();
   return (
     <Modal
       isOpen={isOpen}
@@ -50,6 +52,9 @@ const SubmissionDialog = ({
           text="Choose plan"
           size="custom"
           padding="px-[132px]"
+          onClick={() => {
+            router.push('/pricing-plans');
+          }}
         />
       </div>
     </Modal>
