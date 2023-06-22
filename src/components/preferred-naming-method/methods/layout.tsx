@@ -16,7 +16,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-grey-800">
-      <div className="flex min-h-screen basis-full items-stretch justify-between">
+      <div className="flex min-h-screen basis-full items-stretch justify-between overflow-x-hidden">
         <aside className="flex basis-[37.15%] flex-col bg-black pl-[5.56%] pr-[3.06%] pt-[60px] pb-16">
           <Aside
             userCheckText={
