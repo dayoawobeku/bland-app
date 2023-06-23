@@ -169,12 +169,14 @@ const Main = ({
     },
   };
 
-  const staggerTransition = {
-    type: 'tween',
-    damping: 25,
-    stiffness: 120,
-    staggerChildren: 0.1,
-    duration: 1.3,
+  const transition = {
+    x: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 25,
+      duration: 1.3,
+    },
+    opacity: {duration: 0.4},
   };
 
   return (
@@ -195,7 +197,7 @@ const Main = ({
             custom={direction}
             variants={variants}
             key={currentQuestionIndex}
-            transition={prefersReducedMotion ? undefined : staggerTransition}
+            transition={prefersReducedMotion ? {} : transition}
             className="flex flex-col absolute inset-0 w-full"
           >
             <h1 className="font-unbounded font-medium text-lg w-full max-w-[707px]">
@@ -225,6 +227,7 @@ const Main = ({
                 styles={customStyles}
                 isSearchable={false}
                 openMenuOnFocus
+                required
               />
             )}
 
@@ -247,6 +250,7 @@ const Main = ({
                           whatYouProvide: e.target.value,
                         } as OnChangeValue<OptionType, false>);
                       }}
+                      required
                     />
                   </label>
                   <span className="text-p2 font-medium">for</span>
@@ -265,6 +269,7 @@ const Main = ({
                           whatYouProvideFor: e.target.value,
                         } as OnChangeValue<OptionType, false>);
                       }}
+                      required
                     />
                   </label>
                 </div>
@@ -304,6 +309,7 @@ const Main = ({
                   placeholder="Type your answer here"
                   classNamePrefix="react-select__multi"
                   styles={customStyles}
+                  required
                 />
                 <p className="mt-2 text-semi-sm font-manrope font-light">
                   Press enter after adding each keyword
@@ -326,6 +332,7 @@ const Main = ({
                     businessVision: e.target.value,
                   } as OnChangeValue<OptionType, false>);
                 }}
+                required
               ></textarea>
             )}
 
@@ -350,6 +357,7 @@ const Main = ({
                           firstName: e.target.value,
                         } as OnChangeValue<OptionType, false>);
                       }}
+                      required
                     />
                   </label>
                 </div>
@@ -372,6 +380,7 @@ const Main = ({
                           lastName: e.target.value,
                         } as OnChangeValue<OptionType, false>);
                       }}
+                      required
                     />
                   </label>
                 </div>
