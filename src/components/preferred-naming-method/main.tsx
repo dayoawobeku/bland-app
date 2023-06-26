@@ -5,6 +5,7 @@ import {usePathname, useRouter} from 'next/navigation';
 import {Button} from '@/components';
 import Card from './card';
 import {CardProps} from './types';
+import {useAuth} from '@/hooks';
 
 const CARDS: CardProps[] = [
   {
@@ -26,6 +27,8 @@ const CARDS: CardProps[] = [
 export default function Main() {
   const router = useRouter();
   const pathname = usePathname();
+  const {user} = useAuth();
+  const [error, setError] = useState('');
   const [cards, setCards] = useState<CardProps[]>(CARDS);
 
   const handleCardClick = (id: number, isActive: boolean) => {
@@ -48,15 +51,12 @@ export default function Main() {
 
   const activeCard = cards.find(card => card.active) || null;
 
-  const [error, setError] = useState('');
-
   const handleNavigation = () => {
     if (activeCard?.id === 1) {
       return router.push(pathname + '/free-ai-name');
     } else if (activeCard?.id === 2) {
       return router.push(pathname + '/ai-human-service');
     } else {
-      // show the user an error message
       setError('Please select a naming method');
       return;
     }
@@ -64,9 +64,10 @@ export default function Main() {
 
   return (
     <main className="mt-[84px]">
-      <section className="mx-auto max-w-[655px] text-center">
+      <section className="mx-auto max-w-[70%] text-center">
         <h1 className="font-unbounded text-lg font-medium">
-          Hello 👋🏽, get started by selecting your preferred naming method
+          Hello {user?.displayName}👋🏽, get started by selecting your preferred
+          naming method
         </h1>
         <p className="mt-4 font-manrope font-light max-w-[412px] mx-auto">
           Your Bland membership is now active! Use the free{' '}

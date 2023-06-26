@@ -21,7 +21,6 @@ interface PlanFeatures {
   planType: string;
   planDescription: string;
   pricing?: string;
-  discountedPricing?: string;
   action: React.ReactNode;
   features: PlanFeature[];
   hidePricing?: boolean;
@@ -49,8 +48,7 @@ const plans: PlanFeatures[] = [
   {
     planType: 'Starters',
     planDescription: 'For creators and small projects',
-    pricing: '$200',
-    discountedPricing: '$100',
+    pricing: '#120,000',
     action: (
       <Button
         className="outline outline-1 outline-primary w-full"
@@ -69,8 +67,7 @@ const plans: PlanFeatures[] = [
   {
     planType: 'Budding',
     planDescription: 'For SMEs and early stage businesses',
-    pricing: '$250',
-    discountedPricing: '$150',
+    pricing: '#200,000',
     action: (
       <Button className="w-full" size="zero" text="Choose plan" bg="white" />
     ),
@@ -89,8 +86,7 @@ const plans: PlanFeatures[] = [
   {
     planType: 'More',
     planDescription: 'For large projects and scaling businesses',
-    pricing: '$350',
-    discountedPricing: '$250',
+    pricing: '#250,000',
     action: (
       <Button
         className="outline outline-1 outline-primary w-full"
@@ -229,7 +225,6 @@ function Card({
   planType,
   planDescription,
   pricing,
-  discountedPricing,
   action,
   features,
   bg = 'black',
@@ -305,18 +300,11 @@ function Card({
         {!hidePricing ? (
           <div className="flex items-center gap-3">
             <p
-              className={`font-unbounded text-p2 font-medium ${
-                bg === 'primary' ? 'text-primary-600' : 'text-grey-500'
-              }`}
-            >
-              {pricing}
-            </p>
-            <p
               className={`font-unbounded text-md font-semibold ${
                 bg === 'primary' ? 'text-black' : 'text-white'
               }`}
             >
-              {discountedPricing}
+              {pricing}
             </p>
           </div>
         ) : null}
@@ -396,8 +384,7 @@ export default function PricingPlans() {
           <Card
             planType={selectedPlan.planType}
             planDescription={selectedPlan.planDescription}
-            pricing="$200"
-            discountedPricing="$100"
+            pricing={selectedPlan.pricing}
             action={
               <Button
                 className="outline outline-1 outline-primary w-full"
@@ -470,7 +457,6 @@ export default function PricingPlans() {
                   planType={plan.planType}
                   planDescription={plan.planDescription}
                   pricing={plan.pricing}
-                  discountedPricing={plan.discountedPricing}
                   action={plan.action}
                   features={plan.features}
                   selectedPlan={selectedPlan}

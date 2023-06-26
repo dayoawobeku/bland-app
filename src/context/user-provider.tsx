@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  createContext,
-  useState,
-  ReactNode,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import {createContext, useState, Dispatch, SetStateAction} from 'react';
 import {User} from 'firebase/auth';
 import {useAuth} from '@/hooks';
 import {getCookie} from '@/helpers/cookies';
