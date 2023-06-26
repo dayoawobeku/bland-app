@@ -15,6 +15,7 @@ import {isPast, parseISO, setSeconds, startOfDay} from 'date-fns';
 import firebase from '@/helpers/firebase';
 import {UserContext} from '@/context';
 import {removeCookie, setCookie} from '@/helpers/cookies';
+import {LoadingState} from '@/types';
 
 const auth = getAuth(firebase);
 const db = getFirestore();
@@ -24,6 +25,7 @@ export const useAuth = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [trialCount, setTrialCount] = useState<number | null>(null);
+  const [status, setStatus] = useState(LoadingState.Idle);
 
   useEffect(() => {
     const fetchUserData = async (uid: string) => {
@@ -71,6 +73,7 @@ export const useAuth = () => {
   };
 
   const handleLogin = async (): Promise<void> => {
+    setStatus(LoadingState.Loading);
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
@@ -114,6 +117,9 @@ export const useAuth = () => {
       }
     } catch (error) {
       console.error(error);
+      setStatus(LoadingState.Error);
+    } finally {
+      setStatus(LoadingState.Idle);
     }
   };
 
@@ -152,5 +158,6 @@ export const useAuth = () => {
     handleLogin,
     handleLogout,
     handlePaidUserDetails,
+    status,
   };
 };

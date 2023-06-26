@@ -27,3 +27,9 @@ export interface ProductName {
   domain: string;
   extensions: string[];
 }
+
+export enum LoadingState {
+  Idle = 'idle',
+  Loading = 'loading',
+  Error = 'error',
+}

@@ -66,8 +66,11 @@ export default function Main() {
     <main className="mt-[84px]">
       <section className="mx-auto max-w-[70%] text-center">
         <h1 className="font-unbounded text-lg font-medium">
-          Hello {user?.displayName}👋🏽, get started by selecting your preferred
-          naming method
+          {user !== null
+            ? `Hello ${
+                user?.displayName?.split(' ')[0]
+              }👋🏽, get started by selecting your preferred naming method`
+            : 'Get started by selecting your preferred naming method'}
         </h1>
         <p className="mt-4 font-manrope font-light max-w-[412px] mx-auto">
           Your Bland membership is now active! Use the free{' '}

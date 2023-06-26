@@ -27,9 +27,80 @@ module.exports = {
             transform: 'translate3d(0px, -1095px, 0px)',
           },
         },
+        left: {
+          '0%, 60%, 100%': {
+            fill: '#DB4A4A',
+            transform: 'rotate(0) scaleY(1)',
+            zIndex: '1',
+          },
+          '5%': {
+            fill: '#DB4A4A',
+            transform: 'rotate(-60deg) scaleY(0)',
+            zIndex: '1',
+          },
+          '5.1%': {
+            fill: '#FED18C',
+            transform: 'rotate(-45deg) scaleY(0)',
+            zIndex: '0',
+          },
+          '10%': {
+            fill: '#FED18C',
+            transform: 'rotate(0) scaleY(1)',
+            zIndex: '0',
+          },
+          '50%': {
+            transform: 'rotate(0) scaleY(1)',
+          },
+          '55%': {
+            fill: '#FED18C',
+            transform: 'rotate(-45deg) scaleY(0)',
+            zIndex: '0',
+          },
+          '55.1%': {
+            fill: '#DB4A4A',
+            transform: 'rotate(-60deg) scaleY(0)',
+            zIndex: '1',
+          },
+        },
+        right: {
+          '0%, 60%, 100%': {
+            fill: '#FED18C',
+            transform: 'rotate(0) scaleY(1) ',
+            zIndex: '0',
+          },
+          '5%': {
+            fill: '#FED18C',
+            transform: 'rotate(60deg) scaleY(0)',
+            zIndex: '0',
+          },
+          '5.1%': {
+            fill: '#DB4A4A',
+            transform: 'rotate(45deg) scaleY(0)',
+            zIndex: '1',
+          },
+          '10%': {
+            fill: '#DB4A4A',
+            transform: 'rotate(0) scaleY(1)',
+          },
+          '50%': {
+            transform: 'rotate(0) scaleY(1)',
+          },
+          '55%': {
+            fill: '#DB4A4A',
+            transform: 'rotate(45deg) scaleY(0)',
+            zIndex: '1',
+          },
+          '55.1%': {
+            fill: '#FED18C',
+            transform: 'rotate(60deg) scaleY(0)',
+            zIndex: '0',
+          },
+        },
       },
       animation: {
         slide: 'slide 20s infinite',
+        left: 'left 4s infinite linear',
+        right: 'right 4s infinite linear',
       },
     },
     colors: {

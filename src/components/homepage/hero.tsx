@@ -2,11 +2,19 @@
 
 import Image from 'next/image';
 import {appScreenshot} from '@/assets/images';
-import {Button, Nav} from '@/components';
+import {Button, Loader, Nav} from '@/components';
 import {useAuth} from '@/hooks';
+import {LoadingState} from '@/types';
 
 export default function Hero() {
-  const {handleSignUp, handleLogin} = useAuth();
+  const {handleSignUp, handleLogin, status} = useAuth();
+
+  if (status === LoadingState.Loading) {
+    return <Loader text="Loading..." />;
+  } else if (status === LoadingState.Error) {
+    return 'An error occured';
+  }
+
   return (
     <div className="bg-[linear-gradient(0deg,rgba(0,0,0,1)31.45%,rgba(20,20,20,1)100%)]">
       <div className="pt-10">

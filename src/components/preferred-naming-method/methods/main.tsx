@@ -14,6 +14,7 @@ import {
   Input,
   customStyles,
   MultiValueRemove,
+  Loader,
 } from '@/components';
 import {Keyword, OptionType} from '@/types';
 import {usePostData} from '@/hooks/data-fetching';
@@ -43,6 +44,7 @@ const Main = ({
   const [businessVision, setBusinessVision] = useState('');
   const [isSubmissionDialogOpen, setIsSubmissionDialogOpen] = useState(false);
   const [direction, setDirection] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -102,7 +104,7 @@ const Main = ({
     }
   };
 
-  const {mutate, status} = usePostData();
+  const {mutateAsync, status} = usePostData();
 
   const handleAiSubmit = async (event: {preventDefault: () => void}) => {
     event.preventDefault();
@@ -118,22 +120,22 @@ const Main = ({
       whatYouProvideFor,
       seedWords,
     };
-
-    mutate(requestBody, {
-      onSuccess: data => {
-        setPostData(data?.data);
-        router.push(`${pathname}/results`);
-      },
-      onError: error => {
-        if (error instanceof Error) {
-          throw new Error(error.message);
-        }
-      },
-    });
+    setIsSubmitting(true);
+    try {
+      const data = await mutateAsync(requestBody);
+      setPostData(data?.data);
+      router.push(`${pathname}/results`);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  if (status === 'loading') {
-    return <div>Loading...</div>;
+  if (isSubmitting) {
+    return <Loader />;
   }
 
   if (status === 'error') {
@@ -143,7 +145,6 @@ const Main = ({
   const handleHumanSubmit = (event: {preventDefault: () => void}) => {
     event.preventDefault();
 
-    // add a query param to the url
     setIsSubmissionDialogOpen(true);
     router.push(`${pathname}?submitted=true`);
   };

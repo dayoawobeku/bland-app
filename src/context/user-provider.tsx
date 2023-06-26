@@ -1,9 +1,14 @@
 'use client';
 
-import {createContext, useState, Dispatch, SetStateAction} from 'react';
-import {User} from 'firebase/auth';
+import {
+  createContext,
+  useState,
+  useEffect,
+  SetStateAction,
+  Dispatch,
+} from 'react';
+import {getAuth, onAuthStateChanged, User} from 'firebase/auth';
 import {useAuth} from '@/hooks';
-import {getCookie} from '@/helpers/cookies';
 
 interface UserContextType {
   user: User | null;
@@ -17,10 +22,25 @@ export const UserContext = createContext<UserContextType>({
 
 const UserProvider = ({children}: {children: React.ReactNode}) => {
   const {user: authUser, ...auth} = useAuth();
-  const [user, setUser] = useState<User | null>(() => {
-    const storedUser = getCookie('user');
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      setUser(user);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (authUser && !user) {
+      setUser(authUser);
+    }
+  }, [authUser, user]);
+
   return (
     <UserContext.Provider value={{user, setUser, ...auth}}>
       {children}

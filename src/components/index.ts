@@ -8,6 +8,7 @@ import {
   MultiValueRemove,
 } from './custom-select';
 import Modal from './modal';
+import Loader from './loader';
 
 export {
   Button,
@@ -17,5 +18,6 @@ export {
   DropdownIndicator,
   customStyles,
   MultiValueRemove,
-  Modal
+  Modal,
+  Loader,
 };
