@@ -12,7 +12,11 @@ export default function Hero() {
   if (status === LoadingState.Loading) {
     return <Loader text="Loading..." />;
   } else if (status === LoadingState.Error) {
-    return 'An error occured';
+    return (
+      <div className="error-message">
+        <p>An error occurred</p>
+      </div>
+    );
   }
 
   return (
