@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Loader({text}: {text?: string}) {
   return (
-    <div className="flex flex-col gap-2 items-center justify-center w-full absolute inset-0 bg-grey-800 min-h-screen z-10">
+    <div className="flex flex-col gap-2 items-center justify-center w-full absolute inset-0 bg-grey-800 min-h-screen z-20">
       <div className="w-[133px] height-[114px] relative">
         <svg
           width="133"

@@ -19,7 +19,7 @@ const SubmissionDialog = ({
       onClose={() => {
         setIsOpen(false);
       }}
-      className="bg-black py-14 px-16 max-w-[582px] rounded-[3px] relative"
+      className="bg-black py-14 px-6 sm:px-16 max-w-[582px] rounded-[3px] relative"
     >
       <button
         className="absolute top-6 right-6 w-[42px] h-[42px]"
@@ -48,10 +48,10 @@ const SubmissionDialog = ({
         </div>
 
         <Button
-          className="mt-8"
+          className="mt-8 w-full"
           text="Choose plan"
           size="custom"
-          padding="px-[132px]"
+          padding="sm:px-[132px]"
           onClick={() => {
             router.push('/pricing-plans');
           }}

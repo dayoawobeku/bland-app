@@ -27,6 +27,14 @@ module.exports = {
             transform: 'translate3d(0px, -1095px, 0px)',
           },
         },
+        slidesm: {
+          '0%, 7%, 93%, 100%': {
+            transform: 'translate3d(0px 0px 0px)',
+          },
+          '50%': {
+            transform: 'translate3d(0px, -650px, 0px)',
+          },
+        },
         left: {
           '0%, 60%, 100%': {
             fill: '#DB4A4A',
@@ -99,6 +107,7 @@ module.exports = {
       },
       animation: {
         slide: 'slide 20s infinite',
+        slidesm: 'slidesm 20s infinite',
         left: 'left 4s infinite linear',
         right: 'right 4s infinite linear',
       },
@@ -140,6 +149,7 @@ module.exports = {
       p2: ['1.125rem', '140%'], // 18px
       'md-small': ['1.25rem', '140%'], // 20px
       md: ['1.5rem', '150%'], // 24px
+      md2: ['1.5rem', '33.6px'], // 28px
       lg: ['2rem', '120%'], // 32px
       '2xl': ['2.5rem', '120%'], // 40px
       xl: ['4.0625rem', '120%'], // 65px

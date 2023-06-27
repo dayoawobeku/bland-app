@@ -12,6 +12,8 @@ export interface OptionType {
   value: string;
   label: string;
   keywords?: (string | Keyword)[];
+  inputType?: string;
+  inputTextType?: string;
 }
 
 export interface PostDataRequestBody {
@@ -32,4 +34,16 @@ export enum LoadingState {
   Idle = 'idle',
   Loading = 'loading',
   Error = 'error',
+}
+
+export interface NameData {
+  id: number;
+  userCheckText: string;
+  funFact: string;
+  question: string;
+  instruction: string;
+  options?: OptionType[];
+  inputType: string;
+  inputTextType: string;
+  width: string;
 }

@@ -17,7 +17,7 @@ export default function Card({
     <div
       tabIndex={0}
       role="button"
-      className={`flex flex-col items-start rounded px-[27px] pb-[13px] pt-[33px] outline transition-all duration-300 focus:outline-primary-700 ${
+      className={`flex flex-col items-start rounded px-[27px] pb-[13px] pt-[33px] outline transition-all duration-300 focus:outline-primary-700 min-h-[241px] sm:h-auto ${
         active
           ? 'bg-black outline-2 outline-primary'
           : 'outline-1 outline-grey-300 hover:outline-primary-700'

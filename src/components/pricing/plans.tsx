@@ -169,7 +169,7 @@ const SelectedPlanUI = ({
   }
 
   return (
-    <div className="flex items-center gap-5 mt-24">
+    <div className="flex items-center gap-5 justify-center sm:justify-start flex-wrap mt-14 sm:mt-24">
       <div className="flex flex-col px-14 pt-12 pb-8 rounded-[10px] bg-[#101010]">
         <p className="uppercase text-center font-unbounded font-light text-really-sm tracking-[3px]">
           Your selected plan
@@ -206,7 +206,7 @@ const SelectedPlanUI = ({
 
         {action}
       </div>
-      <div className="flex flex-col max-w-[446px]">
+      <div className="flex flex-col sm:max-w-[446px]">
         <div className="flex flex-col gap-4">
           <h1 className="text-lg font-unbounded font-medium">Select add-ons</h1>
           <p className="font-manrope font-light">
@@ -252,7 +252,7 @@ function Card({
 
   return (
     <div
-      className={`py-8 px-6 ${background} rounded flex flex-col justify-between items-start h-full`}
+      className={`py-8 px-4 md:px-6 ${background} rounded flex flex-col justify-between items-start h-full`}
     >
       <div className="flex flex-col gap-5">
         <div>
@@ -367,7 +367,6 @@ export default function PricingPlans() {
           },
         };
         await handlePaidUserDetails(userId, updatedPlanDetails);
-        console.log('Plan details added to user:', userId);
       } else {
         console.error('User not logged in');
       }
@@ -377,7 +376,7 @@ export default function PricingPlans() {
   };
 
   return (
-    <div className="bg-grey-800 min-h-screen pt-14 px-4 pb-24">
+    <div className="bg-grey-800 min-h-screen pt-10 md:pt-14 px-4 pb-24">
       <div className="mx-auto max-w-[1312px]">
         <Nav />
         {selectedPlan !== null ? (
@@ -439,8 +438,12 @@ export default function PricingPlans() {
         ) : (
           <>
             <main className="mt-[84px] mx-auto max-w-[655px] text-center">
-              <h1 className="font-unbounded text-lg font-medium">
-                Hey Ola, Welcome to bland 🤩. One last step to complete
+              <h1 className="font-unbounded text-md2 sm:text-lg font-medium">
+                {user !== null
+                  ? `Hey ${
+                      user?.displayName?.split(' ')[0]
+                    }, Welcome to bland 🤩. One last step to complete`
+                  : 'Welcome to bland 🤩. One last step to complete'}
               </h1>
               <p className="mt-4 font-manrope font-light max-w-[446px] mx-auto">
                 Select a pricing plan Lorem ipsum dolor sit amet, consectetur{' '}
@@ -450,7 +453,7 @@ export default function PricingPlans() {
               </p>
             </main>
 
-            <section className="grid grid-cols-4 gap-5 mt-16 h-[429px]">
+            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-16 h-full xl:h-[429px]">
               {plans.map(plan => (
                 <Card
                   key={plan.planType}

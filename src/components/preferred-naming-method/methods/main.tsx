@@ -199,9 +199,9 @@ const Main = ({
             variants={variants}
             key={currentQuestionIndex}
             transition={prefersReducedMotion ? {} : transition}
-            className="flex flex-col absolute inset-0 w-full"
+            className="flex flex-col absolute inset-0 w-full h-[calc(100%-32px)]"
           >
-            <h1 className="font-unbounded font-medium text-lg w-full max-w-[707px]">
+            <h1 className="font-unbounded font-medium text-md md:text-lg w-full max-w-[707px]">
               {DATA.question}
             </h1>
             {isHumanName && DATA.instruction !== '' && (
@@ -209,6 +209,7 @@ const Main = ({
                 {DATA.instruction}
               </p>
             )}
+
             {DATA.inputType === 'dropdown' && (
               <Select
                 id={DATA.id.toString()}
@@ -224,7 +225,7 @@ const Main = ({
                 placeholder="Select your answer here"
                 components={{DropdownIndicator}}
                 classNamePrefix="react-select"
-                className={isHumanName ? 'mt-16' : 'mt-20'}
+                className={isHumanName ? 'mt-11 md:mt-16' : 'mt-11 md:mt-20'}
                 styles={customStyles}
                 isSearchable={false}
                 openMenuOnFocus
@@ -234,9 +235,14 @@ const Main = ({
 
             {DATA.inputType === 'text' &&
               DATA.inputTextType !== 'user-name' && (
-                <div className="flex items-center gap-5 font-unbounded mt-20">
-                  <span className="text-p2 font-medium">We provide</span>
-                  <label htmlFor="what_you_provide" className="w-[34.37%]">
+                <div className="flex items-center gap-5 max-[500px]:flex-wrap font-unbounded mt-11 md:mt-20">
+                  <span className="text-semi-sm md:text-p2 font-medium whitespace-nowrap max-[500px]:w-[29%]">
+                    We provide
+                  </span>
+                  <label
+                    htmlFor="what_you_provide"
+                    className="max-[500px]:w-[62%] w-[34.37%]"
+                  >
                     <Input
                       id="what_you_provide"
                       data-not-rounded
@@ -254,8 +260,13 @@ const Main = ({
                       required
                     />
                   </label>
-                  <span className="text-p2 font-medium">for</span>
-                  <label htmlFor="what_you_provide_for" className="w-[34.37%]">
+                  <span className="text-semi-sm md:text-p2 font-medium">
+                    for
+                  </span>
+                  <label
+                    htmlFor="what_you_provide_for"
+                    className="max-[500px]:w-[62%] w-[34.37%]"
+                  >
                     <Input
                       id="what_you_provide_for"
                       data-not-rounded
@@ -277,7 +288,7 @@ const Main = ({
               )}
 
             {DATA.inputType === 'keywords' && (
-              <div className="mt-20">
+              <div className="mt-11 md:mt-20">
                 <CreatableSelect
                   components={{
                     DropdownIndicator: null,
@@ -323,7 +334,7 @@ const Main = ({
                 name=""
                 id="business_vision"
                 placeholder="Type your answer here"
-                className="mt-16 max-w-[85.73%]"
+                className="mt-11 md:mt-16 md:max-w-[85.73%]"
                 aria-label="Business vision"
                 value={businessVision}
                 onChange={e => {
@@ -391,7 +402,7 @@ const Main = ({
         </AnimatePresence>
 
         <div
-          className={`flex items-center justify-between w-full absolute right-0 bottom-0 z-10 ${
+          className={`flex items-center justify-between w-full absolute right-0 bottom-0 ${
             isLastQuestion ? '-mb-[15px]' : ''
           }`}
         >

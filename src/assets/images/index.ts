@@ -21,6 +21,7 @@ export {default as tickCircleGrey} from './tick-circle-grey.svg';
 
 // PNGs
 export {default as appScreenshot} from './app-screenshot.png';
+export {default as appScreenshotSm} from './app-screenshot-sm.png';
 export {default as brandNameImportance} from './brand-name-importance.png';
 export {default as brandNameChecklists} from './brand-name-checklists.png';
 export {default as badBrandName} from './bad-brand-name.png';

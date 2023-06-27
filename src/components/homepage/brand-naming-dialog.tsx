@@ -29,7 +29,7 @@ function Wrapper({
 }) {
   return (
     <div
-      className={`basis-[55.64%] flex flex-col justify-center h-full relative ${padding}`}
+      className={`basis-full md:basis-[55.64%] flex flex-col justify-start sm:justify-center h-full relative ${padding}`}
     >
       {children}
     </div>
@@ -97,8 +97,8 @@ function BrandNameChecklists() {
         <h3 className="font-unbounded font-medium text-p2">
           Essential checklists of a brand name
         </h3>
-        <div className="mt-5 grid grid-rows-3 gap-8 pr-16 font-manrope">
-          <div className="grid grid-cols-2 gap-10">
+        <div className="overflow-y-auto h-full max-h-[400px] sm:overflow-y-visible sm:h-auto sm:max-h-none mt-5 grid sm:grid-rows-3 gap-8 sm:pr-16 font-manrope">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
             <div className="flex flex-col gap-1">
               <p className="text-primary">Protectable</p>
               <p className="text-semi-sm font-light">
@@ -116,7 +116,7 @@ function BrandNameChecklists() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
             <div className="flex flex-col gap-1">
               <p className="text-primary">Memorable</p>
               <p className="text-semi-sm font-light">
@@ -131,7 +131,7 @@ function BrandNameChecklists() {
               </p>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
             <div className="flex flex-col gap-1">
               <p className="text-primary">Relevant</p>
               <p className="text-semi-sm font-light">
@@ -160,8 +160,8 @@ function BadBrandName() {
         <h3 className="font-unbounded font-semibold text-md">
           4 reasons you might end up with a bad brand name
         </h3>
-        <div className="mt-7 grid grid-rows-2 gap-11 pr-16 font-manrope">
-          <div className="grid grid-cols-2 gap-10">
+        <div className="mt-7 grid overflow-y-auto h-full max-h-[340px] sm:overflow-y-visible sm:h-auto sm:max-h-none sm:grid-rows-2 gap-8 sm:gap-11 sm:pr-16 font-manrope">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
             <div className="flex flex-col gap-1">
               <p className="text-primary">Lack of research</p>
               <p className="text-semi-sm font-light">
@@ -180,7 +180,7 @@ function BadBrandName() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
             <div className="flex flex-col gap-1">
               <p className="text-primary">Cultural insensitivity</p>
               <p className="text-semi-sm font-light">
@@ -273,7 +273,7 @@ const BrandNamingDialog = ({
       onClose={() => {
         setIsOpen(false);
       }}
-      className="bg-black max-w-[92.36%] relative rounded-xl max-h-[79.19%] h-full"
+      className="bg-black max-w-[92.36%] relative rounded-xl max-h-[69.19%] sm:max-h-[79.19%] h-full"
       transitionParentClassName="px-0"
     >
       <button
@@ -290,7 +290,7 @@ const BrandNamingDialog = ({
         />
       </button>
       <div className="flex items-center basis-full h-full">
-        <div className="basis-[44.36%] h-full">
+        <div className="basis-[44.36%] h-full hidden md:block">
           <Image
             src={images[currentComponent]}
             alt="brand name importance"
@@ -303,10 +303,10 @@ const BrandNamingDialog = ({
         <Wrapper
           padding={
             currentComponent === 1
-              ? 'pt-6 pl-12 pr-20'
+              ? 'pt-20 md:pt-6 px-6 md:pl-12 md:pr-20'
               : currentComponent === 2
-              ? 'pt-6 pl-12 pr-24'
-              : 'p-12'
+              ? 'pt-20 md:pt-6 px-6 md:pl-12 md:pr-24'
+              : 'pt-20 px-6 md:p-12'
           }
         >
           {components[currentComponent].component}

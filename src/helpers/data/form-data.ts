@@ -1,4 +1,4 @@
-import {OptionType} from '@/types';
+import {NameData, OptionType} from '@/types';
 
 const nameTypeData: OptionType[] = [
   {value: 'business', label: 'Business'},
@@ -16,7 +16,7 @@ const businessIndustryData: OptionType[] = [
   {value: 'real_estate', label: 'Real Estate, Rental and Leasing'},
 ];
 
-const FREE_AI_NAME_DATA = [
+const FREE_AI_NAME_DATA: NameData[] = [
   {
     id: 1,
     userCheckText: 'Choose name',
@@ -65,7 +65,7 @@ const FREE_AI_NAME_DATA = [
   },
 ];
 
-const AI_HUMAN_NAME_DATA = [
+const AI_HUMAN_NAME_DATA: NameData[] = [
   {
     id: 1,
     userCheckText: 'Create account',

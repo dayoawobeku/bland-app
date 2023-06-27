@@ -21,7 +21,7 @@ export default function Button({
     }
     switch (size) {
       case 'large':
-        return 'px-[132px]';
+        return 'sm:px-[132px]';
       case 'medium':
         return 'px-[44.5px]';
       case 'zero':

@@ -48,6 +48,7 @@ export const useAuth = () => {
   }, [user]);
 
   const handleSignUp = async (): Promise<void> => {
+    setStatus(LoadingState.Loading);
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
@@ -69,6 +70,8 @@ export const useAuth = () => {
       router.push('/preferred-naming-method');
     } catch (error) {
       console.error(error);
+    } finally {
+      setStatus(LoadingState.Idle);
     }
   };
 

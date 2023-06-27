@@ -19,6 +19,7 @@
 
 .react-select__menu-list {
   padding: 16px 0 !important;
+  background-color: #121212;
 }
 
 .react-select__menu-list div {
@@ -28,6 +29,13 @@
 .react-select__control,
 .react-select__menu {
   max-width: 85.73%;
+}
+
+@media screen and (max-width: 768px) {
+  .react-select__control,
+  .react-select__menu {
+    max-width: 100%;
+  }
 }
 
 .react-select__input-container,

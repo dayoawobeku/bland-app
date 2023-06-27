@@ -63,9 +63,9 @@ export default function Main() {
   };
 
   return (
-    <main className="mt-[84px]">
-      <section className="mx-auto max-w-[70%] text-center">
-        <h1 className="font-unbounded text-lg font-medium">
+    <main className="mt-14 md:mt-[84px]">
+      <section className="mx-auto sm:max-w-[70%] text-center">
+        <h1 className="font-unbounded text-md2 sm:text-lg font-medium">
           {user !== null
             ? `Hello ${
                 user?.displayName?.split(' ')[0]
@@ -74,13 +74,13 @@ export default function Main() {
         </h1>
         <p className="mt-4 font-manrope font-light max-w-[412px] mx-auto">
           Your Bland membership is now active! Use the free{' '}
-          <span className="inline-block">
+          <span className="sm:inline-block">
             AI-Name-Generator or get a paid service from an expert.
           </span>
         </p>
       </section>
-      <section className="mt-16 flex flex-col items-center gap-6">
-        <div className="mx-auto grid max-w-[654px] grid-cols-2 gap-11">
+      <section className="mt-10 sm:mt-16 flex flex-col items-center gap-6">
+        <div className="mx-auto grid max-w-[654px] grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-11">
           {cards.map(card => (
             <Card key={card.id} handleCardClick={handleCardClick} {...card} />
           ))}
@@ -88,7 +88,11 @@ export default function Main() {
         {error && activeCard === null && (
           <p className="text-primary font-manrope text-sm">{error}</p>
         )}
-        <Button size="large" onClick={handleNavigation} />
+        <Button
+          size="large"
+          onClick={handleNavigation}
+          className="w-full sm:w-fit"
+        />
       </section>
     </main>
   );

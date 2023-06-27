@@ -32,7 +32,7 @@ body {
   }
 
   input[data-not-rounded] {
-    @apply max-w-full pl-0 pr-10 rounded-none outline-none border-b-[0.5px] border-grey-300 text-md-small placeholder:text-md-small placeholder:text-primary-700 placeholder:font-light focus:border-primary focus:ring-0 focus:text-primary;
+    @apply max-w-full px-0 md:pr-10 rounded-none outline-none border-b-[0.5px] border-grey-300 text-md-small placeholder:text-md-small placeholder:text-primary-700 placeholder:font-light focus:border-primary focus:ring-0 focus:text-primary;
   }
 
   textarea {
