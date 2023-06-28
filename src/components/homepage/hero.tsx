@@ -29,7 +29,7 @@ export default function Hero() {
         <h1 className="mx-auto max-w-[1020px] font-unbounded text-md2 sm:text-lg md:text-xl font-bold">
           The fastest naming experience for brands
         </h1>
-        <p className="mx-auto mt-5 max-w-[708px] font-manrope text-md-small tracking-[-1.9%]">
+        <p className="mx-auto mt-5 max-w-[708px] font-manrope text-base sm:text-md-small tracking-[-1.9%]">
           <span className="font-light">
             Get unique brand name and available domain in no time.
             Human-AI-crafted names powered by GPT-4 —
