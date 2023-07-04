@@ -1,4 +1,4 @@
-import {Unbounded, Manrope} from 'next/font/google';
+import {manrope, unbounded} from '@/assets/fonts';
 import '@/styles/globals.css';
 import '@/styles/react-select.css';
 import {
@@ -7,18 +7,6 @@ import {
   SelectedOptionsProvider,
   UserProvider,
 } from '@/context';
-
-const unbounded = Unbounded({
-  variable: '--font-unbounded',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-const manrope = Manrope({
-  variable: '--font-manrope',
-  subsets: ['latin'],
-  display: 'swap',
-});
 
 export const metadata = {
   title: 'Create Next App',

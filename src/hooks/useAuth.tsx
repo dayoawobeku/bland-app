@@ -48,11 +48,11 @@ export const useAuth = () => {
   }, [user]);
 
   const handleSignUp = async (): Promise<void> => {
-    setStatus(LoadingState.Loading);
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
       const {user} = result;
+      setStatus(LoadingState.Loading);
 
       const userData = {
         displayName: user.displayName,
@@ -70,13 +70,13 @@ export const useAuth = () => {
       router.push('/preferred-naming-method');
     } catch (error) {
       console.error(error);
+      setStatus(LoadingState.Error);
     } finally {
       setStatus(LoadingState.Idle);
     }
   };
 
   const handleLogin = async (): Promise<void> => {
-    setStatus(LoadingState.Loading);
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
@@ -94,6 +94,7 @@ export const useAuth = () => {
           await deleteUser(user);
           return;
         } else {
+          setStatus(LoadingState.Loading);
           const userDocRef = doc(db, 'users', user.uid);
           const userDocSnap = await getDoc(userDocRef);
           const userData = userDocSnap.data();
@@ -134,7 +135,7 @@ export const useAuth = () => {
       if (pathname === '/') {
         router.refresh();
       } else {
-        router.push('/');
+        window.location.href = '/';
       }
     } catch (error) {
       console.error(error);

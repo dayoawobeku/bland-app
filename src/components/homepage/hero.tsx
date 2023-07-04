@@ -75,6 +75,7 @@ export default function Hero() {
           quality={100}
           placeholder="blur"
           fill
+          sizes="(min-width: 640px) 577.56px, 100vw"
         />
       </section>
     </div>

@@ -1,6 +1,8 @@
-import DataProvider, {DataContext} from './data-provider';
+import DataProvider from './data-provider';
+import {DataContext} from './data-context';
 import QueryProvider from './query-provider';
-import UserProvider, {UserContext} from './user-provider';
+import UserProvider from './user-provider';
+import {UserContext} from './user-context';
 import SelectedOptionsProvider, {
   SelectedOptionsContext,
 } from './selected-options-provider';
