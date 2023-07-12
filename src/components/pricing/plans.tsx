@@ -423,6 +423,7 @@ export default function PricingPlans() {
                   className="w-7 h-7 appearance-none checked:bg-primary p-0"
                   checked={selectedAddons.includes(addon)}
                   onChange={() => handleAddonChange(addon)}
+                  aria-checked={selectedAddons.includes(addon)}
                 />
                 <div className="flex flex-col gap-0.5">
                   <span className="font-manrope font-light">{addon.label}</span>
@@ -442,14 +443,11 @@ export default function PricingPlans() {
                 {user !== null
                   ? `Hey ${
                       user?.displayName?.split(' ')[0]
-                    }, Welcome to bland 🤩. One last step to complete`
-                  : 'Welcome to bland 🤩. One last step to complete'}
+                    }, one last step to complete`
+                  : 'Welcome to bland. One last step to complete'}
               </h1>
-              <p className="mt-4 font-manrope font-light max-w-[446px] mx-auto">
-                Select a pricing plan Lorem ipsum dolor sit amet, consectetur{' '}
-                <span className="inline-block">
-                  adipiscing elit, sed do eiusmod tempor
-                </span>
+              <p className="mt-4 font-manrope font-light">
+                Select a preferred service
               </p>
             </main>
 

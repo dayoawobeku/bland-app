@@ -1,18 +1,15 @@
-import {useState} from 'react';
+import {useContext} from 'react';
 import {updateDoc, doc, getFirestore} from 'firebase/firestore';
 import {isBefore} from 'date-fns';
 import {User, getAuth} from 'firebase/auth';
 import firebase from '@/helpers/firebase';
+import {TrialCountContext} from '@/context';
 
 getAuth(firebase);
 const db = getFirestore();
 
-export const useTrialCount = (
-  user: User | null,
-  initialCount: number,
-  resetTime: Date,
-) => {
-  const [trialCount, setTrialCount] = useState<number>(initialCount);
+export const useTrialCount = (user: User | null, resetTime: Date) => {
+  const {trialCount, setTrialCount} = useContext(TrialCountContext);
 
   const handleConsumeTrial = async (): Promise<void> => {
     if (user && trialCount > 0 && isBefore(new Date(), resetTime)) {
@@ -32,16 +29,5 @@ export const useTrialCount = (
     }
   };
 
-  return {trialCount, handleConsumeTrial};
+  return {handleConsumeTrial};
 };
-
-// how to use
-
-// const initialCount = 7;
-// const resetTime = endOfDay(new Date());
-
-// const {trialCount, handleConsumeTrial} = useTrialCount(
-//   user,
-//   initialCount,
-//   resetTime,
-// );

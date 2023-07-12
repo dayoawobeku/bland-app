@@ -1,7 +1,7 @@
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'default' | 'large' | 'medium' | 'zero' | 'custom';
   text?: string;
-  bg?: 'default' | 'white' | 'black';
+  bg?: 'default' | 'white' | 'black' | 'transparent';
   color?: string;
   padding?: string;
 }
@@ -36,6 +36,8 @@ export default function Button({
         return 'bg-white';
       case 'black':
         return 'bg-black';
+      case 'transparent':
+        return 'bg-transparent';
       default:
         return 'bg-primary';
     }
@@ -48,12 +50,16 @@ export default function Button({
       ? 'hover:bg-[#F2F2F2]'
       : bg === 'black'
       ? 'hover:bg-grey'
+      : bg === 'transparent'
+      ? 'hover:bg-transparent'
       : 'hover:bg-primary-600';
   const activeBgClass =
     bg === 'white'
       ? 'active:bg-[#DDDDDD]'
       : bg === 'black'
       ? 'active:bg-grey-200'
+      : bg === 'transparent'
+      ? 'active:bg-transparent'
       : 'active:bg-primary-700';
   const fontColorClass = `${color}`;
 

@@ -6,6 +6,8 @@ import {UserContext} from './user-context';
 import SelectedOptionsProvider, {
   SelectedOptionsContext,
 } from './selected-options-provider';
+import TrialCountProvider from './trial-count-provider';
+import {TrialCountContext} from './trial-count-context';
 
 export {
   UserProvider,
@@ -15,4 +17,6 @@ export {
   DataContext,
   UserContext,
   SelectedOptionsContext,
+  TrialCountContext,
+  TrialCountProvider,
 };

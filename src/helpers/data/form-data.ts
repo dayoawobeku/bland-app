@@ -8,14 +8,6 @@ const nameTypeData: OptionType[] = [
   {value: 'portfolio', label: 'Portfolio'},
 ];
 
-const businessIndustryData: OptionType[] = [
-  {value: 'tech', label: 'Tech'},
-  {value: 'fashion', label: 'Fashion'},
-  {value: 'food', label: 'Food'},
-  {value: 'finance', label: 'Finance'},
-  {value: 'real_estate', label: 'Real Estate, Rental and Leasing'},
-];
-
 const FREE_AI_NAME_DATA: NameData[] = [
   {
     id: 1,
@@ -34,11 +26,10 @@ const FREE_AI_NAME_DATA: NameData[] = [
     userCheckText: 'Choose name',
     funFact:
       'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
-    question: 'Which of these industries does your business fit in?',
+    question: 'Fill the blanks to describe your business briefly.',
     instruction: '',
-    options: businessIndustryData,
-    inputType: 'dropdown',
-    inputTextType: 'business-industry',
+    inputType: 'text',
+    inputTextType: 'business-description',
     width: '50%',
   },
   {
@@ -46,21 +37,22 @@ const FREE_AI_NAME_DATA: NameData[] = [
     userCheckText: 'Choose name',
     funFact:
       'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
-    question: 'Fill the blanks to describe your business briefly.',
-    instruction: '',
-    inputType: 'text',
-    inputTextType: 'business-description',
-    width: '75%',
-  },
-  {
-    id: 4,
-    userCheckText: 'Choose name',
-    funFact:
-      'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
     question: 'Add up to 5 keywords for name generation',
     instruction: '',
     inputType: 'keywords',
     inputTextType: 'keywords',
+    width: '75%',
+  },
+  {
+    id: 4,
+    userCheckText: 'Create account',
+    funFact:
+      'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
+    question: 'Why does this business exist?',
+    instruction:
+      'Share the vision of your company or the story behind how you decided to build this.',
+    inputType: 'textarea',
+    inputTextType: 'business-vision',
     width: '100%',
   },
 ];
@@ -76,22 +68,10 @@ const AI_HUMAN_NAME_DATA: NameData[] = [
     options: nameTypeData,
     inputType: 'dropdown',
     inputTextType: 'name-type',
-    width: '20%',
+    width: '25%',
   },
   {
     id: 2,
-    userCheckText: 'Create account',
-    funFact:
-      'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
-    question: 'Which of these industries does your business fit in?',
-    instruction: 'Select a category that best describes your business or brand',
-    options: businessIndustryData,
-    inputType: 'dropdown',
-    inputTextType: 'business-industry',
-    width: '40%',
-  },
-  {
-    id: 3,
     userCheckText: 'Create account',
     funFact:
       'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
@@ -99,10 +79,10 @@ const AI_HUMAN_NAME_DATA: NameData[] = [
     instruction: '',
     inputType: 'text',
     inputTextType: 'business-description',
-    width: '60%',
+    width: '50%',
   },
   {
-    id: 4,
+    id: 3,
     userCheckText: 'Create account',
     funFact:
       'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
@@ -111,10 +91,10 @@ const AI_HUMAN_NAME_DATA: NameData[] = [
       'Share the vision of your company or the story behind how you decided to build this.',
     inputType: 'textarea',
     inputTextType: 'business-vision',
-    width: '80%',
+    width: '75%',
   },
   {
-    id: 5,
+    id: 4,
     userCheckText: 'Create account',
     funFact:
       'The word "brand" originally referred to a burning mark on livestock to indicate ownership.',
@@ -126,4 +106,4 @@ const AI_HUMAN_NAME_DATA: NameData[] = [
   },
 ];
 
-export {FREE_AI_NAME_DATA, AI_HUMAN_NAME_DATA};
+export {FREE_AI_NAME_DATA, AI_HUMAN_NAME_DATA, nameTypeData};

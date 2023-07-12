@@ -6,7 +6,11 @@ import {usePathname, useRouter} from 'next/navigation';
 import Select, {OnChangeValue, ActionMeta} from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import {motion, AnimatePresence, useReducedMotion} from 'framer-motion';
-import {AI_HUMAN_NAME_DATA, FREE_AI_NAME_DATA} from '@/helpers/data';
+import {
+  AI_HUMAN_NAME_DATA,
+  FREE_AI_NAME_DATA,
+  nameTypeData,
+} from '@/helpers/data';
 import {next, previous} from '@/assets/images';
 import {
   Button,
@@ -19,7 +23,14 @@ import {
 import {Keyword, OptionType} from '@/types';
 import {usePostData} from '@/hooks/data-fetching';
 import {SubmissionDialog} from '../ai-human-service';
-import {DataContext, SelectedOptionsContext} from '@/context';
+import {
+  DataContext,
+  SelectedOptionsContext,
+  TrialCountContext,
+  UserContext,
+} from '@/context';
+import {useTrialCount} from '@/hooks';
+import {resetTime} from '@/helpers';
 
 const Main = ({
   currentQuestionIndex,
@@ -28,37 +39,107 @@ const Main = ({
   currentQuestionIndex: number;
   setCurrentQuestionIndex: (index: number) => void;
 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const prefersReducedMotion = useReducedMotion();
+  const {user} = useContext(UserContext);
   const {selectedOptions, setSelectedOptions} = useContext(
     SelectedOptionsContext,
   );
-  const prefersReducedMotion = useReducedMotion();
   const {setPostData} = useContext(DataContext);
+  const {trialCount} = useContext(TrialCountContext);
+  const {handleConsumeTrial} = useTrialCount(user, resetTime);
 
-  const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
-  const [whatYouProvide, setWhatYouProvide] = useState('');
-  const [whatYouProvideFor, setWhatYouProvideFor] = useState('');
-  const [keywords, setKeywords] = useState<(string | Keyword)[]>([]);
-  const [currentKeyword, setCurrentKeyword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [businessVision, setBusinessVision] = useState('');
-  const [isSubmissionDialogOpen, setIsSubmissionDialogOpen] = useState(false);
-  const [direction, setDirection] = useState(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const router = useRouter();
-  const pathname = usePathname();
   const isHumanName = pathname === '/preferred-naming-method/ai-human-service';
 
   const nameData = isHumanName ? AI_HUMAN_NAME_DATA : FREE_AI_NAME_DATA;
+
+  const [selectedOption, setSelectedOption] = useState<OptionType | null>(
+    selectedOptions[0] || null,
+  );
+  const [whatYouProvide, setWhatYouProvide] = useState(
+    selectedOptions[1]?.whatYouProvide || '',
+  );
+  const [whatYouProvideFor, setWhatYouProvideFor] = useState(
+    selectedOptions[1]?.whatYouProvideFor || '',
+  );
+  const [keywords, setKeywords] = useState<(string | Keyword)[]>(
+    isHumanName ? [] : selectedOptions[2]?.keywords || [],
+  );
+  const [businessVision, setBusinessVision] = useState<string>(
+    isHumanName
+      ? selectedOptions[2]?.businessVision || ''
+      : selectedOptions[3]?.businessVision || '',
+  );
+  const [firstName, setFirstName] = useState(
+    isHumanName ? selectedOptions[3]?.firstName || '' : '',
+  );
+  const [lastName, setLastName] = useState(
+    isHumanName ? selectedOptions[3]?.lastName || '' : '',
+  );
+  const [currentKeyword, setCurrentKeyword] = useState('');
+  const [isSubmissionDialogOpen, setIsSubmissionDialogOpen] = useState(false);
+  const [direction, setDirection] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [dynamicQuestion, setDynamicQuestion] = useState('');
+  const [error, setError] = useState('');
+
   const DATA = nameData[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === nameData.length - 1;
 
   const handleNextQuestion = () => {
+    switch (currentQuestionIndex) {
+      case 0:
+        if (!selectedOption) {
+          setError('Please select a naming method');
+          return;
+        }
+        break;
+      case 1:
+        if (!whatYouProvide || !whatYouProvideFor) {
+          setError('Please fill in the fields');
+          return;
+        }
+        break;
+      case 2:
+        if (
+          (!keywords.length && !isHumanName) ||
+          (!businessVision && isHumanName)
+        ) {
+          setError(
+            isHumanName
+              ? 'Please share your business vision'
+              : 'Please add at least one keyword',
+          );
+          return;
+        }
+        break;
+      default:
+        break;
+    }
+
+    // update dynamic question
+    if (currentQuestionIndex === 0) {
+      const selectedValue = selectedOption?.value;
+      let updatedQuestion = '';
+
+      if (selectedValue) {
+        const optionLabel = nameTypeData.find(
+          option => option.value === selectedValue,
+        )?.label;
+        if (optionLabel) {
+          updatedQuestion = `Fill the blanks to describe your ${optionLabel.toLowerCase()} briefly.`;
+        }
+      }
+
+      setDynamicQuestion(updatedQuestion);
+    }
+
     const nextQuestionIndex = currentQuestionIndex + 1;
     setSelectedOption(selectedOptions[nextQuestionIndex] || null);
     setDirection(1);
     setCurrentQuestionIndex(nextQuestionIndex);
+    setError('');
   };
 
   const handlePrevQuestion = () => {
@@ -76,7 +157,7 @@ const Main = ({
       updatedOptions[currentQuestionIndex] = updatedOption as OptionType;
       return updatedOptions;
     });
-
+    setError('');
     setSelectedOption(option as OptionType);
   };
 
@@ -100,6 +181,7 @@ const Main = ({
         });
 
         setCurrentKeyword('');
+        setError('');
         event.preventDefault();
     }
   };
@@ -124,6 +206,7 @@ const Main = ({
     try {
       const data = await mutateAsync(requestBody);
       setPostData(data?.data);
+      handleConsumeTrial();
       router.push(`${pathname}/results`);
     } catch (error) {
       if (error instanceof Error) {
@@ -201,8 +284,13 @@ const Main = ({
             transition={prefersReducedMotion ? {} : transition}
             className="flex flex-col absolute inset-0 w-full h-[calc(100%-32px)]"
           >
+            {error ? (
+              <p className="absolute -top-8 text-primary font-manrope font-medium text-base">
+                {error}
+              </p>
+            ) : null}
             <h1 className="font-unbounded font-medium text-md md:text-lg w-full max-w-[707px]">
-              {DATA.question}
+              {currentQuestionIndex === 1 ? dynamicQuestion : DATA.question}
             </h1>
             {isHumanName && DATA.instruction !== '' && (
               <p className="mt-4 text-semi-sm font-manrope font-light">
@@ -230,6 +318,7 @@ const Main = ({
                 isSearchable={false}
                 openMenuOnFocus
                 required
+                aria-label="Your answer"
               />
             )}
 
@@ -319,9 +408,11 @@ const Main = ({
                     key: `${keyword}-${index}`,
                   }))}
                   placeholder="Type your answer here"
+                  className="text-primary font-manrope font-light mt-2"
                   classNamePrefix="react-select__multi"
                   styles={customStyles}
                   required
+                  aria-label="Type your answer here"
                 />
                 <p className="mt-2 text-semi-sm font-manrope font-light">
                   Press enter after adding each keyword

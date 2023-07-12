@@ -1,11 +1,14 @@
 'use client';
 
-import {useContext} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {DataContext} from '@/context';
+import {useRouter} from 'next/navigation';
+import {DataContext, TrialCountContext} from '@/context';
 import {bookmarkIc, logo} from '@/assets/images';
 import {ProductName} from '@/types';
+import {Button, Loader} from '@/components';
+import MaxResponsesDialog from './max-responses-dialog';
 
 function GeneratedCard({data}: {data: ProductName}) {
   return (
@@ -32,35 +35,103 @@ function GeneratedCard({data}: {data: ProductName}) {
 }
 
 export default function FreeAiNameResults() {
+  const router = useRouter();
   const {postData} = useContext(DataContext);
-  return (
-    <div className="bg-grey-800 min-h-screen pt-10 px-4 pb-24">
-      <div className="mx-auto max-w-[1312px]">
-        <header className="py-3 shadow-[0_18px_48px_0_rgba(0,0,0,0.15)] rounded-[15px]">
-          <nav className="flex items-center gap-6 justify-between rounded-[14px] border border-grey-500 px-4 md:px-[29px] py-[22px] ">
-            <Link href="/">
-              <Image src={logo} alt="logo" width={128.92} height={28.66} />
-            </Link>
-            <p>
-              <span className="text-sm md:text-base font-manrope font-medium">
-                Not satisfied with these names?{' '}
-              </span>
-              <Link
-                href="/preferred-naming-method/ai-human-service"
-                className="font-unbounded text-base md:text-md-small text-primary hover:opacity-80 transition-all duration-300"
-              >
-                Get AI-Human Service
-              </Link>
-            </p>
-          </nav>
-        </header>
+  const {trialCount} = useContext(TrialCountContext);
 
-        <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 xl:gap-14 mt-12">
-          {postData?.map((data, i) => (
-            <GeneratedCard key={i} data={data} />
-          ))}
-        </main>
+  const [isMaxResponsesDialogOpen, setIsMaxResponsesDialogOpen] =
+    useState(false);
+  const [displayedItems, setDisplayedItems] = useState<ProductName[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (postData) {
+      const initialDisplayedItems = postData.slice(0, 12);
+      setDisplayedItems(initialDisplayedItems);
+    }
+  }, [postData]);
+
+  const regenerateNames = () => {
+    setIsLoading(true);
+
+    const newIndex = currentIndex + 12;
+    const newDisplayedItems = postData?.slice(newIndex, newIndex + 12);
+
+    setDisplayedItems(newDisplayedItems || []);
+    setCurrentIndex(newIndex);
+    setIsLoading(false);
+  };
+
+  return (
+    <>
+      <MaxResponsesDialog
+        isOpen={isMaxResponsesDialogOpen}
+        setIsOpen={setIsMaxResponsesDialogOpen}
+      />
+      <div className="bg-grey-800 min-h-screen pt-10 px-4 pb-24">
+        <div className="mx-auto max-w-[1312px]">
+          <header className="py-3 shadow-[0_18px_48px_0_rgba(0,0,0,0.15)] rounded-[15px]">
+            <nav className="flex items-center gap-6 justify-between rounded-[14px] border border-grey-500 px-4 md:px-[29px] py-[22px] ">
+              <Link href="/">
+                <Image src={logo} alt="logo" width={128.92} height={28.66} />
+              </Link>
+              <p>
+                <span className="text-sm md:text-base font-manrope font-medium">
+                  Not satisfied with these names?{' '}
+                </span>
+                <Link
+                  href="/preferred-naming-method/ai-human-service"
+                  className="font-unbounded text-base md:text-md-small text-primary hover:opacity-80 transition-all duration-300"
+                >
+                  Get AI-Human Service
+                </Link>
+              </p>
+            </nav>
+          </header>
+
+          <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 xl:gap-14 mt-12">
+            {displayedItems.map((data, i) => (
+              <GeneratedCard key={i} data={data} />
+            ))}
+          </main>
+
+          <div className="mt-14 flex items-start justify-center mx-auto gap-14">
+            <Button
+              className="outline outline-1 outline-primary"
+              text="Update preferences"
+              size="custom"
+              padding="sm:px-[100.5px]"
+              bg="transparent"
+              color="text-primary"
+              onClick={() => {
+                router.back();
+              }}
+            />
+            <div className="flex flex-col gap-3 items-center">
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <Button
+                  text="Regenerate names"
+                  size="custom"
+                  padding="sm:px-[100.5px]"
+                  onClick={() => {
+                    if (trialCount > 0) {
+                      regenerateNames();
+                    } else {
+                      setIsMaxResponsesDialogOpen(true);
+                    }
+                  }}
+                />
+              )}
+              <p className="font-manrope text-sm text-[#FEE3BA] underline">
+                {trialCount} {trialCount === 1 ? 'trial' : 'trials'} left
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

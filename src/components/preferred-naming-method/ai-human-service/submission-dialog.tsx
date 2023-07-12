@@ -39,16 +39,16 @@ const SubmissionDialog = ({
         />
         <div className="my-8">
           <h3 className="font-manrope font-bold text-[1.375rem]">
-            Your brand details have been submitted 🎉
+            Your details have been submitted 🎉
           </h3>
           <p className="font-manrope font-light text-semi-sm px-6 mt-3">
-            We have received your brand details and already setting up a
-            personality for your brand. Please tell us what services you need.
+            We have received your brand details and would be setting up a
+            personality for your brand. Please choose your preferred service.
           </p>
         </div>
 
         <Button
-          className="mt-8 w-full"
+          className="w-full"
           text="Choose plan"
           size="custom"
           padding="sm:px-[132px]"

@@ -183,7 +183,8 @@
   outline: none !important;
   outline-offset: unset !important;
   box-shadow: unset !important;
-  color: #987d54 !important;
+  color: #fed18c !important;
+  font-weight: normal !important;
 }
 
 .react-select__multi__placeholder {

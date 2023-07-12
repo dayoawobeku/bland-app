@@ -18,6 +18,7 @@ export {default as closeTransparentIc} from './close-transparent.svg';
 export {default as submission} from './submission.svg';
 export {default as tickCircle} from './tick-circle.svg';
 export {default as tickCircleGrey} from './tick-circle-grey.svg';
+export {default as maxResponses} from './max-responses.svg';
 
 // PNGs
 export {default as appScreenshot} from './app-screenshot.png';

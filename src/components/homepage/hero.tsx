@@ -13,7 +13,7 @@ export default function Hero() {
     return <Loader text="Loading..." />;
   } else if (status === LoadingState.Error) {
     return (
-      <div className="error-message">
+      <div>
         <p>An error occurred</p>
       </div>
     );
@@ -25,18 +25,20 @@ export default function Hero() {
         <Nav />
       </div>
 
-      <main className="mx-auto mt-14 md:mt-36 max-w-[calc(1281px+32px)] px-4 text-center">
+      <main className="mx-auto mt-14 md:mt-24 max-w-[calc(1281px+32px)] px-4 text-center">
         <h1 className="mx-auto max-w-[1020px] font-unbounded text-md2 sm:text-lg md:text-xl font-bold">
-          The fastest naming experience for brands
-        </h1>
-        <p className="mx-auto mt-5 max-w-[708px] font-manrope text-base sm:text-md-small tracking-[-1.9%]">
-          <span className="font-light">
-            Get unique brand name and available domain in no time.
-            Human-AI-crafted names powered by GPT-4 —
+          The fastest way
+          <span className="inline-block">
+            to name <span className="text-primary">brands</span>
           </span>
-          <span className="font-medium text-primary">
-            {' '}
-            not a name generating tool.
+        </h1>
+        <p className="mx-auto mt-5 max-w-[708px] font-manrope text-base font-light sm:text-md-small tracking-[-1.9%]">
+          <span>Get unique names and available domain in no time.</span>
+          <span className="inline-block">
+            Fully AI or AI-Human crafted names—
+            <span className="font-medium text-primary">
+              not a regular name generating tool.
+            </span>
           </span>
         </p>
         <div className="mt-7">

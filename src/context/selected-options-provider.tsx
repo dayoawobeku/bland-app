@@ -17,7 +17,6 @@ export const SelectedOptionsContext = createContext<SelectedOptionsContextType>(
 
 const SelectedOptionsProvider = ({children}: {children: React.ReactNode}) => {
   const [selectedOptions, setSelectedOptions] = useState<OptionType[]>([]);
-
   return (
     <SelectedOptionsContext.Provider
       value={{selectedOptions, setSelectedOptions}}
