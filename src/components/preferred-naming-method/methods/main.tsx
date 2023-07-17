@@ -23,12 +23,7 @@ import {
 import {Keyword, OptionType} from '@/types';
 import {usePostData} from '@/hooks/data-fetching';
 import {SubmissionDialog} from '../ai-human-service';
-import {
-  DataContext,
-  SelectedOptionsContext,
-  TrialCountContext,
-  UserContext,
-} from '@/context';
+import {DataContext, SelectedOptionsContext, UserContext} from '@/context';
 import {useTrialCount} from '@/hooks';
 import {resetTime} from '@/helpers';
 
@@ -47,7 +42,6 @@ const Main = ({
     SelectedOptionsContext,
   );
   const {setPostData} = useContext(DataContext);
-  const {trialCount} = useContext(TrialCountContext);
   const {handleConsumeTrial} = useTrialCount(user, resetTime);
 
   const isHumanName = pathname === '/preferred-naming-method/ai-human-service';

@@ -11,7 +11,6 @@ import {
   deleteUser,
 } from 'firebase/auth';
 import {doc, getDoc, getFirestore, setDoc, updateDoc} from 'firebase/firestore';
-import {isPast, parseISO, setSeconds, startOfDay} from 'date-fns';
 import firebase from '@/helpers/firebase';
 import {UserContext} from '@/context';
 import {removeCookie, setCookie} from '@/helpers/cookies';
@@ -58,8 +57,7 @@ export const useAuth = () => {
         displayName: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
-        trialCount: 7,
-        trialCountResetTime: setSeconds(startOfDay(new Date()), 0),
+        trialCount: 3,
       };
 
       const userDocRef = doc(db, 'users', user.uid);
@@ -98,19 +96,6 @@ export const useAuth = () => {
           const userDocRef = doc(db, 'users', user.uid);
           const userDocSnap = await getDoc(userDocRef);
           const userData = userDocSnap.data();
-
-          const currentDate = new Date();
-          const resetTime = parseISO(userData?.trialCountResetTime || '');
-          if (isPast(resetTime)) {
-            if (userData) {
-              userData.trialCount = 7;
-              userData.trialCountResetTime = setSeconds(
-                startOfDay(currentDate),
-                0,
-              );
-            }
-          }
-
           setUser(user);
           setCookie('user', JSON.stringify(user));
           setTrialCount(userData?.trialCount || 0);
