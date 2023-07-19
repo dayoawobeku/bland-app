@@ -7,7 +7,6 @@ async function initializeAdmin() {
     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID as string,
     clientEmail: process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL as string,
     privateKey: process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY as string,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET as string,
   };
 
   return createFirebaseAdminApp(params);
