@@ -29,5 +29,6 @@ export function createFirebaseAdminApp(params: FirebaseAdminAppParams) {
   return admin.initializeApp({
     credential: cert,
     projectId: params.projectId,
+    databaseURL: 'https://bland-v1-default-rtdb.firebaseio.com',
   });
 }
