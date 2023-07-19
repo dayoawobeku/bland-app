@@ -1,4 +1,4 @@
-import admin from 'firebase-admin';
+import {cert, getApps, initializeApp} from 'firebase-admin/app';
 
 interface FirebaseAdminAppParams {
   projectId: string;
@@ -13,22 +13,18 @@ function formatFirebasePrivateKey(key: string) {
 export function createFirebaseAdminApp(params: FirebaseAdminAppParams) {
   const privateKey = formatFirebasePrivateKey(params.privateKey);
 
-  // if already created, return the same instance
-  if (admin.apps.length > 0) {
-    return admin.app();
-  }
-
   // create certificate
-  const cert = admin.credential.cert({
+  const credential = cert({
     projectId: params.projectId,
     clientEmail: params.clientEmail,
     privateKey,
   });
 
-  // initialize admin app
-  return admin.initializeApp({
-    credential: cert,
-    projectId: params.projectId,
-    databaseURL: 'https://bland-v1-default-rtdb.firebaseio.com',
-  });
+  if (!getApps().length) {
+    return initializeApp({
+      credential,
+      projectId: params.projectId,
+      databaseURL: 'https://bland-v1-default-rtdb.firebaseio.com',
+    });
+  }
 }
