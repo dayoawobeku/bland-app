@@ -16,6 +16,7 @@ export async function GET() {
   const {success} = await updateTrialCount();
 
   if (success) {
+    console.log('successfully updated');
     return NextResponse.json({
       success: true,
       message: 'Trial count updated to 3 for all users',
