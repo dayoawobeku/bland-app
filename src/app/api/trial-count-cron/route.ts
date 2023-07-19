@@ -12,7 +12,7 @@ async function initializeAdmin() {
   return createFirebaseAdminApp(params);
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   const {success} = await updateTrialCount();
 
   if (success) {
