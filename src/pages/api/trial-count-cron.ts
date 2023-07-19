@@ -16,12 +16,25 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const {success} = await updateTrialCount();
+  try {
+    const {success} = await updateTrialCount();
 
-  if (success) {
-    res.status(200).json({
-      success: true,
-      message: 'Trial count updated to 3 for all users',
+    if (success) {
+      res.status(200).json({
+        success: true,
+        message: 'Trial count updated to 3 for all users',
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'Error updating trial count',
+      });
+    }
+  } catch (error) {
+    console.error('Error updating trial count:', error);
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while updating trial count',
     });
   }
 }
