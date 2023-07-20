@@ -4,11 +4,13 @@ import {useContext, useEffect, useState} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
-import {DataContext, TrialCountContext} from '@/context';
+import {DataContext, TrialCountContext, UserContext} from '@/context';
 import {bookmarkIc, logo} from '@/assets/images';
 import {ProductName} from '@/types';
 import {Button, Loader} from '@/components';
-import MaxResponsesDialog from './max-responses-dialog';
+import {MaxResponsesDialog} from '.';
+import {resetTime} from '@/helpers';
+import {useTrialCount} from '@/hooks';
 
 function GeneratedCard({data}: {data: ProductName}) {
   return (
@@ -36,14 +38,18 @@ function GeneratedCard({data}: {data: ProductName}) {
 
 export default function FreeAiNameResults() {
   const router = useRouter();
+  const {user} = useContext(UserContext);
   const {postData} = useContext(DataContext);
   const {trialCount} = useContext(TrialCountContext);
+  const {handleConsumeTrial} = useTrialCount(user, resetTime);
 
   const [isMaxResponsesDialogOpen, setIsMaxResponsesDialogOpen] =
     useState(false);
   const [displayedItems, setDisplayedItems] = useState<ProductName[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showUpdatePreferenceMessage, setShowUpdatePreferenceMessage] =
+    useState(false);
 
   useEffect(() => {
     if (postData) {
@@ -58,9 +64,17 @@ export default function FreeAiNameResults() {
     const newIndex = currentIndex + 12;
     const newDisplayedItems = postData?.slice(newIndex, newIndex + 12);
 
-    setDisplayedItems(newDisplayedItems || []);
-    setCurrentIndex(newIndex);
-    setIsLoading(false);
+    if (newDisplayedItems && newDisplayedItems.length >= 3) {
+      setDisplayedItems(newDisplayedItems);
+      setCurrentIndex(newIndex);
+      handleConsumeTrial();
+    } else {
+      setShowUpdatePreferenceMessage(true);
+    }
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, Math.floor(Math.random() * 3000) + 10000); // Random time between 4 and 10 seconds
   };
 
   return (
@@ -102,15 +116,19 @@ export default function FreeAiNameResults() {
               text="Update preferences"
               size="custom"
               padding="sm:px-[100.5px]"
-              bg="transparent"
+              bg="grey"
               color="text-primary"
               onClick={() => {
-                router.back();
+                if (trialCount > 0) {
+                  router.back();
+                } else {
+                  setIsMaxResponsesDialogOpen(true);
+                }
               }}
             />
             <div className="flex flex-col gap-3 items-center">
               {isLoading ? (
-                <Loader />
+                <Loader text="Generating fresh names" />
               ) : (
                 <Button
                   text="Regenerate names"
@@ -130,6 +148,12 @@ export default function FreeAiNameResults() {
               </p>
             </div>
           </div>
+          {showUpdatePreferenceMessage ? (
+            <p className="text-primary font-manrope text-center mt-4">
+              Please try updating your preferences. There are no more results
+              available.
+            </p>
+          ) : null}
         </div>
       </div>
     </>

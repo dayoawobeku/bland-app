@@ -1,4 +1,4 @@
-import {Manrope, Unbounded} from 'next/font/google';
+import {unbounded, manrope} from '@/assets/fonts';
 import '@/styles/globals.css';
 import '@/styles/react-select.css';
 import {
@@ -9,21 +9,9 @@ import {
   UserProvider,
 } from '@/context';
 
-const unbounded = Unbounded({
-  variable: '--font-unbounded',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-const manrope = Manrope({
-  variable: '--font-manrope',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
 export const metadata = {
   title: 'Bland',
-  description: 'The fastest wayto name brands',
+  description: 'The fastest way to name brands',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

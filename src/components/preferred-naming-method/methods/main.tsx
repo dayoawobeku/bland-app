@@ -23,9 +23,15 @@ import {
 import {Keyword, OptionType} from '@/types';
 import {usePostData} from '@/hooks/data-fetching';
 import {SubmissionDialog} from '../ai-human-service';
-import {DataContext, SelectedOptionsContext, UserContext} from '@/context';
+import {
+  DataContext,
+  SelectedOptionsContext,
+  TrialCountContext,
+  UserContext,
+} from '@/context';
 import {useTrialCount} from '@/hooks';
 import {resetTime} from '@/helpers';
+import {MaxResponsesDialog} from '../free-ai-name';
 
 const Main = ({
   currentQuestionIndex,
@@ -42,6 +48,7 @@ const Main = ({
     SelectedOptionsContext,
   );
   const {setPostData} = useContext(DataContext);
+  const {trialCount} = useContext(TrialCountContext);
   const {handleConsumeTrial} = useTrialCount(user, resetTime);
 
   const isHumanName = pathname === '/preferred-naming-method/ai-human-service';
@@ -77,6 +84,8 @@ const Main = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [dynamicQuestion, setDynamicQuestion] = useState('');
   const [error, setError] = useState('');
+  const [isMaxResponsesDialogOpen, setIsMaxResponsesDialogOpen] =
+    useState(false);
 
   const DATA = nameData[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === nameData.length - 1;
@@ -185,6 +194,11 @@ const Main = ({
   const handleAiSubmit = async (event: {preventDefault: () => void}) => {
     event.preventDefault();
 
+    if (trialCount === 0) {
+      setIsMaxResponsesDialogOpen(true);
+      return;
+    }
+
     const companyType = selectedOptions[0]?.label;
     const industry = selectedOptions[1]?.label;
     const seedWords = keywords.join(', ');
@@ -262,6 +276,10 @@ const Main = ({
       <SubmissionDialog
         isOpen={isSubmissionDialogOpen}
         setIsOpen={setIsSubmissionDialogOpen}
+      />
+      <MaxResponsesDialog
+        isOpen={isMaxResponsesDialogOpen}
+        setIsOpen={setIsMaxResponsesDialogOpen}
       />
       <form
         className="relative h-full"

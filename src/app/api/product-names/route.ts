@@ -99,7 +99,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     const productNames: string[] = productNamesString
       .split(',')
       .map(name => name.trim());
-    const extensions: string[] = ['.net', '.io'];
+    const extensions: string[] = ['.com', '.net', '.io'];
 
     const domains = productNames.map(name => name.toLowerCase());
 

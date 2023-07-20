@@ -27,7 +27,7 @@ export default function Hero() {
 
       <main className="mx-auto mt-14 md:mt-24 max-w-[calc(1281px+32px)] px-4 text-center">
         <h1 className="mx-auto max-w-[1020px] font-unbounded text-md2 sm:text-lg md:text-xl font-bold">
-          The fastest way
+          The fastest way{' '}
           <span className="inline-block">
             to name <span className="text-primary">brands</span>
           </span>
