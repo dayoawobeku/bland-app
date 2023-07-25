@@ -56,13 +56,13 @@ const Main = ({
   const nameData = isHumanName ? AI_HUMAN_NAME_DATA : FREE_AI_NAME_DATA;
 
   const [selectedOption, setSelectedOption] = useState<OptionType | null>(
-    selectedOptions[0] || null,
+    isHumanName ? null : selectedOptions[0] || null,
   );
   const [whatYouProvide, setWhatYouProvide] = useState(
-    selectedOptions[1]?.whatYouProvide || '',
+    isHumanName ? '' : selectedOptions[1]?.whatYouProvide || '',
   );
   const [whatYouProvideFor, setWhatYouProvideFor] = useState(
-    selectedOptions[1]?.whatYouProvideFor || '',
+    isHumanName ? '' : selectedOptions[1]?.whatYouProvideFor || '',
   );
   const [keywords, setKeywords] = useState<(string | Keyword)[]>(
     isHumanName ? [] : selectedOptions[2]?.keywords || [],
