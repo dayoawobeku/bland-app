@@ -1,5 +1,5 @@
 import {NextResponse} from 'next/server';
-import {Configuration, OpenAIApi} from 'openai';
+import OpenAI, {APIError, APIConnectionError, APIUserAbortError} from 'openai';
 
 interface DomainAvailability {
   extension: string;
@@ -12,11 +12,9 @@ interface AvailableDomain {
   extensions: string[];
 }
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
 
 // check domain availability with whois api
 async function checkDomainAvailability(
@@ -64,30 +62,30 @@ export async function POST(req: Request): Promise<NextResponse> {
   const {companyType, industry, whatYouProvide, whatYouProvideFor, seedWords} =
     body;
 
-  const prompt = `Use a Product description, the type of company, seed words, and the industry the company belongs to generate product names.
-        ###
-        Type of company: Digital Product (App, Software etc).
-        Industry: Tech
-        Product description: We provide healthcare for tech engineers
-        Seed words: fast, healthy, compact
-        Product names: Technova, FitTech, Wellnex, RapidCare, CompactHealth, VitalTech, SwiftFit, WellnessTech, HealthLink, FastWell, TechVita, RapidHealth, HealthyTech, SwiftCare, WellTech
-        ###
-        Type of company: ${companyType}.
-        Industry: ${industry}
-        Product description: We provide ${whatYouProvide} for ${whatYouProvideFor}
-        Seed words: ${seedWords}
-        Product names: `;
-
   try {
-    const completion = await openai.createCompletion({
-      model: 'text-davinci-003',
-      prompt: prompt,
-      max_tokens: 60,
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful assistant that generates product names. Provide a numbered list of 10 product names.',
+        },
+        {
+          role: 'user',
+          content: `Use a Product description, the type of company, seed words, and the industry the company belongs to generate product names.
+          Type of company: ${companyType}.
+          Industry: ${industry}
+          Product description: We provide ${whatYouProvide} for ${whatYouProvideFor}
+          Seed words: ${seedWords}`,
+        },
+      ],
+      max_tokens: 200,
       temperature: 0.78,
     });
 
     const productNamesString: string | undefined =
-      completion.data.choices[0]?.text?.trim();
+      completion.choices[0]?.message.content?.trim();
 
     if (!productNamesString) {
       return NextResponse.json(
@@ -97,47 +95,63 @@ export async function POST(req: Request): Promise<NextResponse> {
     }
 
     const productNames: string[] = productNamesString
-      .split(',')
-      .map(name => name.trim());
+      .split('\n')
+      .map(line => line.replace(/^\d+\.\s*/, '').trim())
+      .filter(name => name.length > 0);
+
     const extensions: string[] = ['.com', '.net', '.io'];
 
-    const domains = productNames.map(name => name.toLowerCase());
+    const domains = productNames.map(name =>
+      name.toLowerCase().replace(/\s+/g, ''),
+    );
 
     const availability: DomainAvailability[] = await checkDomainAvailability(
       domains,
       extensions,
     );
 
-    const availableDomains: AvailableDomain[] = availability
-      .filter((item: DomainAvailability, index: number) => item.isAvailable)
-      .map((item: DomainAvailability, index: number) => ({
-        name: productNames[Math.floor(index / extensions.length)],
-        domain: `${productNames[Math.floor(index / extensions.length)]} - ${
-          item.extension
-        } is available`,
-        extensions: [item.extension],
-      }));
+    const availableDomains: AvailableDomain[] = [];
 
-    const groupedData: {[key: string]: string[]} = {};
+    productNames.forEach((name, index) => {
+      const availableExtensions = extensions.filter(
+        (ext, extIndex) =>
+          availability[index * extensions.length + extIndex].isAvailable,
+      );
 
-    availableDomains.forEach((item: AvailableDomain) => {
-      if (groupedData[item.name]) {
-        groupedData[item.name].push(...item.extensions);
-      } else {
-        groupedData[item.name] = [...item.extensions];
+      if (availableExtensions.length > 0) {
+        availableDomains.push({
+          name: name,
+          domain: `${name} - ${availableExtensions.join(' and ')} ${
+            availableExtensions.length > 1 ? 'are' : 'is'
+          } available`,
+          extensions: availableExtensions,
+        });
       }
     });
 
-    const formattedData: AvailableDomain[] = Object.keys(groupedData).map(
-      (name: string) => ({
-        name: name,
-        domain: `${name} - ${groupedData[name].join(' and ')} are available`,
-        extensions: groupedData[name],
-      }),
-    );
-
-    return NextResponse.json({data: formattedData}, {status: 200});
+    return NextResponse.json({data: availableDomains}, {status: 200});
   } catch (error) {
-    return NextResponse.json({message: error}, {status: 500});
+    if (error instanceof APIError) {
+      console.error('OpenAI API Error:', error);
+      return NextResponse.json(
+        {error: 'OpenAI API Error'},
+        {status: error.status || 500},
+      );
+    } else if (error instanceof APIConnectionError) {
+      console.error('OpenAI API Connection Error:', error);
+      return NextResponse.json(
+        {error: 'Failed to connect to OpenAI API'},
+        {status: 503},
+      );
+    } else if (error instanceof APIUserAbortError) {
+      console.error('User Aborted Request:', error);
+      return NextResponse.json({error: 'Request aborted'}, {status: 400});
+    } else {
+      console.error('Unexpected Error:', error);
+      return NextResponse.json(
+        {error: 'An unexpected error occurred'},
+        {status: 500},
+      );
+    }
   }
 }
